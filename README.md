@@ -26,5 +26,22 @@ $$\omega = d\alpha + \delta\beta + \gamma$$
 By enforcing strict boundary conditions (Neumann for the exact part, Dirichlet for the co-exact part) on a finite domain like a unit disk, we guarantee perfect $L^2$ orthogonality. This allows us to define the quasi-exactness of the field as the ratio:
 $$\text{Percentage Exact} = \frac{\|d\alpha\|^2}{\|\omega\|^2}$$
 
+## 🛠️ Technologies Used
+
+This project was intentionally built without heavy frontend frameworks (like React or Vue) or build tools (like Webpack or Vite) to ensure it remains a perfectly portable, zero-dependency educational resource.
+
+* **HTML5 & Vanilla CSS3:** Used for the responsive layout, typography, and interactive sliders. All styling is self-contained within the file to guarantee it renders perfectly on GitHub Pages or any local machine.
+* **Vanilla JavaScript (ES6):** Powers the "Interactive Linear Field Analyzer." It dynamically calculates the symmetric and anti-symmetric Hodge components, computes the $L^2$ norms, and updates the DOM in real time without needing a Python backend.
+* **[MathJax (v3)](https://www.mathjax.org/):** A JavaScript display engine used to render the formal LaTeX equations—such as the Laplace-de Rham operator, codifferentials, and integrals—beautifully across all browsers.
+* **[Plotly.js](https://plotly.com/javascript/):** A high-level, declarative charting library built on top of WebGL. It is used to generate the interactive, draggable 3D surface plots of the exact and co-exact scalar potentials.
+
+## 👨‍💻 Author
+
+**Stefano Nicotri**
+
+* **GitHub:** [@stefanonicotri](https://github.com/stefanonicotri)
+
+*(Feel free to reach out with questions, discussions on differential geometry, or contributions to this educational tool!)*
+
 ## License
 This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.
