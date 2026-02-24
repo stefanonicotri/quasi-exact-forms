@@ -51,6 +51,21 @@
             border-bottom: 1px solid #d1d5db;
             padding-bottom: 5px;
         }
+        .abstract {
+            background-color: #ffffff;
+            padding: 25px 30px;
+            border-radius: 8px;
+            border-left: 5px solid var(--primary);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            font-size: 1.1em;
+            margin: 30px 0 40px 0;
+        }
+        .abstract h2 {
+            margin-top: 0;
+            border-bottom: none;
+            color: var(--primary);
+            font-size: 1.3em;
+        }
         .math-block {
             background: var(--math-bg);
             padding: 20px;
@@ -188,10 +203,34 @@
 
     <h1>Quasi-Exact Differential Forms & Hodge Decomposition</h1>
     
-    <p>In differential geometry, a non-exact differential form can be <strong>"quasi-exact"</strong>. This means the discrepancy between different integration paths is quantifiable, bounded, and potentially very small. This path dependence is strictly governed by the form's exterior derivative and the topology of the underlying manifold.</p>
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>In classical vector calculus and differential geometry, fields are often categorized in a binary way: they are either perfectly conservative (exact) or they are path-dependent (non-exact). However, in real-world physics, "non-exactness" is rarely an all-or-nothing property. A flow might be overwhelmingly conservative, driven entirely by a potential gradient, but contaminated by a tiny, localized vortex.</p>
+        <p>This document explores the concept of <strong>quasi-exactness</strong>—the mathematical framework used to definitively measure exactly <em>how</em> conservative a path-dependent field is. By utilizing the <strong>Hodge Decomposition Theorem</strong>, we can mathematically slice any messy, non-exact differential form into perfectly orthogonal "exact" (gradient) and "co-exact" (swirling) components. By comparing the $L^2$ norms (energies) of these separated layers, we can assign a strict, quantitative percentage to the field's exactness.</p>
+    </div>
+
+    <div class="image-placeholder">
+        
+    </div>
 
     <h2>1. Formal Definitions and Framework</h2>
     <p>Before decomposing a form, we rigorously define the space it lives in and the operators acting upon it. Let $M$ be an $n$-dimensional oriented Riemannian manifold.</p>
+
+    <div class="definition">
+        <h3>The Space of Differential $k$-forms ($\Omega^k(M)$)</h3>
+        <p>Before introducing operators, we must define the objects they act upon. A <strong>differential $k$-form</strong> is a completely antisymmetric covariant $k$-tensor field. Geometrically, at every point $p$ on the manifold $M$, it assigns an alternating, multilinear map that takes $k$ tangent vectors as input and yields a real number (a scalar).</p>
+        $$\omega_p : \underbrace{T_p M \times \dots \times T_p M}_{k \text{ times}} \to \mathbb{R}$$
+        <p>The collection of all such smooth $k$-forms over the entire manifold forms an infinite-dimensional vector space denoted as <strong>$\Omega^k(M)$</strong>. To build intuition:</p>
+        <ul>
+            <li><strong>$\Omega^0(M)$ (0-forms):</strong> Smooth scalar functions, like temperature or potential energy $f(x,y)$.</li>
+            <li><strong>$\Omega^1(M)$ (1-forms):</strong> Covector fields, which naturally integrate over lines/curves (e.g., work, circulation).</li>
+            <li><strong>$\Omega^2(M)$ (2-forms):</strong> Objects that naturally integrate over surfaces (e.g., magnetic flux).</li>
+            <li><strong>$\Omega^n(M)$ ($n$-forms):</strong> Top-forms, representing the fundamental volume elements for the space.</li>
+        </ul>
+        <div class="image-placeholder">
+            
+        </div>
+    </div>
 
     <div class="definition">
         <h3>The Exterior Derivative ($d$)</h3>
@@ -211,21 +250,21 @@
         <p>The Hodge star is a linear isomorphism $\star: \Omega^k(M) \to \Omega^{n-k}(M)$ that depends entirely on the manifold's metric tensor $g$ and its orientation. It formally maps a $k$-dimensional form to its orthogonal $(n-k)$-dimensional "complement" (its dual).</p>
         
         <p><strong>General Definition:</strong> On an $n$-dimensional oriented Riemannian manifold with a volume form $dV$, the Hodge star is uniquely defined by the relation:</p>
-        $$ \alpha \wedge \star\beta = \langle \alpha, \beta \rangle_g \, dV $$
+        $$\alpha \wedge \star\beta = \langle \alpha, \beta \rangle_g \, dV$$
         <p>where $\alpha$ and $\beta$ are any two $k$-forms, and $\langle \alpha, \beta \rangle_g$ is the local inner product induced by the metric. This means $\star\beta$ is the unique $(n-k)$-form that, when wedged with $\alpha$, yields the volume form scaled by their inner product.</p>
 
         <p><strong>Specialization to $\mathbb{R}^2$:</strong> In 2D Euclidean space ($n=2$) with volume form $dV = dx \wedge dy$, the Hodge star geometrically acts as a 90-degree rotation on 1-forms:</p>
-        $$ \star dx = dy, \quad \star dy = -dx $$
-        $$ \star 1 = dx \wedge dy, \quad \star(dx \wedge dy) = 1 $$
+        $$\star dx = dy, \quad \star dy = -dx$$
+        $$\star 1 = dx \wedge dy, \quad \star(dx \wedge dy) = 1$$
 
         <hr style="border:0; border-top: 1px solid #bae6fd; margin: 20px 0;">
 
         <p><strong>Specialization to $\mathbb{R}^3$:</strong> In 3D Euclidean space ($n=3$) with volume form $dV = dx \wedge dy \wedge dz$, the Hodge star is the secret engine behind standard vector calculus. It establishes the duality between 1-forms (like work or circulation) and 2-forms (like flux). It effectively mimics the cross product!</p>
         <p><em>Mapping 1-forms to 2-forms (and vice versa):</em></p>
-        $$ \star dx = dy \wedge dz, \quad \star dy = dz \wedge dx, \quad \star dz = dx \wedge dy $$
-        $$ \star(dy \wedge dz) = dx, \quad \star(dz \wedge dx) = dy, \quad \star(dx \wedge dy) = dz $$
+        $$\star dx = dy \wedge dz, \quad \star dy = dz \wedge dx, \quad \star dz = dx \wedge dy$$
+        $$\star(dy \wedge dz) = dx, \quad \star(dz \wedge dx) = dy, \quad \star(dx \wedge dy) = dz$$
         <p><em>Mapping scalars to volumes:</em></p>
-        $$ \star 1 = dx \wedge dy \wedge dz, \quad \star(dx \wedge dy \wedge dz) = 1 $$
+        $$\star 1 = dx \wedge dy \wedge dz, \quad \star(dx \wedge dy \wedge dz) = 1$$
         <div class="image-placeholder">
             
         </div>
@@ -234,12 +273,12 @@
 
         <p><strong>Specialization to $\mathbb{R}^4$:</strong> In 4D Euclidean space ($n=4$) with coordinates $(x_1, x_2, x_3, x_4)$ and volume form $dV = dx_1 \wedge dx_2 \wedge dx_3 \wedge dx_4$, the Hodge star exhibits a fascinating property: it maps 2-forms directly to other 2-forms. This is the mathematical foundation of <em>self-dual</em> fields in gauge theory and electromagnetism.</p>
         <p><em>Mapping 2-forms to 2-forms:</em></p>
-        $$ \star(dx_1 \wedge dx_2) = dx_3 \wedge dx_4 $$
-        $$ \star(dx_1 \wedge dx_3) = -dx_2 \wedge dx_4 $$
-        $$ \star(dx_1 \wedge dx_4) = dx_2 \wedge dx_3 $$
-        $$ \star(dx_2 \wedge dx_3) = dx_1 \wedge dx_4 $$
-        $$ \star(dx_2 \wedge dx_4) = -dx_1 \wedge dx_3 $$
-        $$ \star(dx_3 \wedge dx_4) = dx_1 \wedge dx_2 $$
+        $$\star(dx_1 \wedge dx_2) = dx_3 \wedge dx_4$$
+        $$\star(dx_1 \wedge dx_3) = -dx_2 \wedge dx_4$$
+        $$\star(dx_1 \wedge dx_4) = dx_2 \wedge dx_3$$
+        $$\star(dx_2 \wedge dx_3) = dx_1 \wedge dx_4$$
+        $$\star(dx_2 \wedge dx_4) = -dx_1 \wedge dx_3$$
+        $$\star(dx_3 \wedge dx_4) = dx_1 \wedge dx_2$$
         <p><em>(Note: In Minkowski spacetime for relativity, the signature causes some of these signs to change, which dictates the dual relationship between Electric and Magnetic fields).</em></p>
         <div class="image-placeholder">
             
