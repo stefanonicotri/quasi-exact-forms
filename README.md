@@ -25,11 +25,3 @@ $$\omega = d\alpha + \delta\beta + \gamma$$
 
 By enforcing strict boundary conditions (Neumann for the exact part, Dirichlet for the co-exact part) on a finite domain like a unit disk, we guarantee perfect $L^2$ orthogonality. This allows us to define the quasi-exactness of the field as the ratio:
 $$\text{Percentage Exact} = \frac{\|d\alpha\|^2}{\|\omega\|^2}$$
-
-## 🚀 Usage & Installation
-
-This project is entirely client-side and requires no build steps, package managers, or backend servers. 
-
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/your-username/your-repo-name.git](https://github.com/your-username/your-repo-name.git)
