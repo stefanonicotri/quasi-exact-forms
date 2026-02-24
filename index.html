@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quasi-Exact Differential Forms & Hodge Decomposition</title>
+    
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+    
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --secondary: #2563eb;
+            --background: #fafafa;
+            --text: #1f2937;
+            --math-bg: #f3f4f6;
+            --accent: #e0f2fe;
+            --warning-bg: #fef3c7;
+            --warning-border: #d97706;
+            --info-bg: #f8fafc;
+            --info-border: #64748b;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.7;
+            max-width: 950px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            color: var(--text);
+            background-color: var(--background);
+        }
+        h1, h2, h3, h4 {
+            color: var(--primary);
+            margin-top: 1.8em;
+        }
+        h1 {
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+        h2 {
+            border-bottom: 1px solid #d1d5db;
+            padding-bottom: 5px;
+        }
+        .math-block {
+            background: var(--math-bg);
+            padding: 20px;
+            border-left: 4px solid var(--secondary);
+            margin: 20px 0;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+        .definition {
+            background-color: var(--accent);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #0369a1;
+        }
+        .notation-note {
+            background-color: var(--warning-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--warning-border);
+        }
+        .info-note {
+            background-color: var(--info-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid var(--info-border);
+        }
+        .step-box {
+            background-color: #fff;
+            border: 1px solid #e5e7eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .plot-container {
+            width: 100%;
+            height: 550px;
+            margin: 30px 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        details {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 10px 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        summary {
+            font-weight: bold;
+            color: var(--primary);
+            cursor: pointer;
+            outline: none;
+            font-size: 1.1em;
+            padding: 5px 0;
+        }
+        summary:hover {
+            color: var(--secondary);
+        }
+        .image-placeholder {
+            text-align: center;
+            font-style: italic;
+            color: #6b7280;
+            margin: 20px 0;
+        }
+        /* Interactive Section Styles */
+        .interactive-panel {
+            background: #ffffff;
+            border: 2px solid var(--secondary);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 40px 0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .sliders-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .slider-group label {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        input[type=range] {
+            width: 100%;
+        }
+        .live-math {
+            font-family: "Courier New", Courier, monospace;
+            background: var(--math-bg);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 10px;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        .progress-container {
+            width: 100%;
+            height: 30px;
+            background-color: #e5e7eb;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+            position: relative;
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--secondary);
+            width: 100%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Quasi-Exact Differential Forms & Hodge Decomposition</h1>
+    
+    <p>In differential geometry, a non-exact differential form can be <strong>"quasi-exact"</strong>. This means the discrepancy between different integration paths is quantifiable, bounded, and potentially very small. This path dependence is strictly governed by the form's exterior derivative and the topology of the underlying manifold.</p>
+
+    <h2>1. Formal Definitions and Framework</h2>
+    <p>Before decomposing a form, we rigorously define the space it lives in and the operators acting upon it. Let $M$ be an $n$-dimensional oriented Riemannian manifold.</p>
+
+    <div class="definition">
+        <h3>The Exterior Derivative ($d$)</h3>
+        <p>The exterior derivative is a coordinate-free differential operator $d: \Omega^k(M) \to \Omega^{k+1}(M)$ that generalizes the concepts of the gradient, curl, and divergence from vector calculus. It maps a $k$-form to a $(k+1)$-form and satisfies three crucial properties:</p>
+        <ol>
+            <li><strong>Gradient Action:</strong> For a 0-form (scalar function) $f$, $df$ is its standard differential.</li>
+            <li><strong>Graded Leibniz Rule:</strong> For a $k$-form $\alpha$ and any form $\beta$, $d(\alpha \wedge \beta) = d\alpha \wedge \beta + (-1)^k \alpha \wedge d\beta$.</li>
+            <li><strong>Nilpotence:</strong> $d^2 = d \circ d = 0$. Geometrically, this expresses the profound topological principle that "the boundary of a boundary is zero."</li>
+        </ol>
+        <div class="image-placeholder">
+            
+        </div>
+    </div>
+
+    <div class="definition">
+        <h3>The Hodge Star Operator ($\star$)</h3>
+        <p>The Hodge star is a linear isomorphism $\star: \Omega^k(M) \to \Omega^{n-k}(M)$ that depends entirely on the manifold's metric tensor $g$ and its orientation. It formally maps a $k$-dimensional form to its orthogonal $(n-k)$-dimensional "complement" (its dual).</p>
+        
+        <p><strong>General Definition:</strong> On an $n$-dimensional oriented Riemannian manifold with a volume form $dV$, the Hodge star is uniquely defined by the relation:</p>
+        $$ \alpha \wedge \star\beta = \langle \alpha, \beta \rangle_g \, dV $$
+        <p>where $\alpha$ and $\beta$ are any two $k$-forms, and $\langle \alpha, \beta \rangle_g$ is the local inner product induced by the metric. This means $\star\beta$ is the unique $(n-k)$-form that, when wedged with $\alpha$, yields the volume form scaled by their inner product.</p>
+
+        <p><strong>Specialization to $\mathbb{R}^2$:</strong> In 2D Euclidean space ($n=2$) with volume form $dV = dx \wedge dy$, the Hodge star geometrically acts as a 90-degree rotation on 1-forms:</p>
+        $$ \star dx = dy, \quad \star dy = -dx $$
+        $$ \star 1 = dx \wedge dy, \quad \star(dx \wedge dy) = 1 $$
+
+        <hr style="border:0; border-top: 1px solid #bae6fd; margin: 20px 0;">
+
+        <p><strong>Specialization to $\mathbb{R}^3$:</strong> In 3D Euclidean space ($n=3$) with volume form $dV = dx \wedge dy \wedge dz$, the Hodge star is the secret engine behind standard vector calculus. It establishes the duality between 1-forms (like work or circulation) and 2-forms (like flux). It effectively mimics the cross product!</p>
+        <p><em>Mapping 1-forms to 2-forms (and vice versa):</em></p>
+        $$ \star dx = dy \wedge dz, \quad \star dy = dz \wedge dx, \quad \star dz = dx \wedge dy $$
+        $$ \star(dy \wedge dz) = dx, \quad \star(dz \wedge dx) = dy, \quad \star(dx \wedge dy) = dz $$
+        <p><em>Mapping scalars to volumes:</em></p>
+        $$ \star 1 = dx \wedge dy \wedge dz, \quad \star(dx \wedge dy \wedge dz) = 1 $$
+        <div class="image-placeholder">
+            
+        </div>
+
+        <hr style="border:0; border-top: 1px solid #bae6fd; margin: 20px 0;">
+
+        <p><strong>Specialization to $\mathbb{R}^4$:</strong> In 4D Euclidean space ($n=4$) with coordinates $(x_1, x_2, x_3, x_4)$ and volume form $dV = dx_1 \wedge dx_2 \wedge dx_3 \wedge dx_4$, the Hodge star exhibits a fascinating property: it maps 2-forms directly to other 2-forms. This is the mathematical foundation of <em>self-dual</em> fields in gauge theory and electromagnetism.</p>
+        <p><em>Mapping 2-forms to 2-forms:</em></p>
+        $$ \star(dx_1 \wedge dx_2) = dx_3 \wedge dx_4 $$
+        $$ \star(dx_1 \wedge dx_3) = -dx_2 \wedge dx_4 $$
+        $$ \star(dx_1 \wedge dx_4) = dx_2 \wedge dx_3 $$
+        $$ \star(dx_2 \wedge dx_3) = dx_1 \wedge dx_4 $$
+        $$ \star(dx_2 \wedge dx_4) = -dx_1 \wedge dx_3 $$
+        $$ \star(dx_3 \wedge dx_4) = dx_1 \wedge dx_2 $$
+        <p><em>(Note: In Minkowski spacetime for relativity, the signature causes some of these signs to change, which dictates the dual relationship between Electric and Magnetic fields).</em></p>
+        <div class="image-placeholder">
+            
+        </div>
+    </div>
+
+    <div class="definition">
+        <h3>The $L^2$ Inner Product</h3>
+        <p>To measure the "size" of a differential form, we combine the wedge product and the Hodge star to define a global integral. For two $k$-forms $\alpha, \beta \in \Omega^k(M)$, the global $L^2$ inner product is defined as:</p>
+        $$\langle \alpha, \beta \rangle_{L^2} = \int_M \alpha \wedge \star\beta$$
+        <p>This induces a norm $\|\omega\|^2 = \langle \omega, \omega \rangle_{L^2}$, representing the total "energy" of the field over the manifold.</p>
+    </div>
+
+    <div class="definition">
+        <h3>The Codifferential Operator ($\delta$)</h3>
+        <p>While the exterior derivative $d$ acts as a generalized gradient/curl, its formal adjoint with respect to the $L^2$ inner product is the codifferential $\delta: \Omega^k \to \Omega^{k-1}$. It acts as a generalized divergence.</p>
+        $$\delta = (-1)^{n(k-1)+1} \star d \star$$
+        <p>By definition of the adjoint, $\langle d\alpha, \beta \rangle = \langle \alpha, \delta\beta \rangle$. Because $d^2 = 0$, it immediately follows that $\delta^2 = 0$.</p>
+    </div>
+
+    <h2>2. The Hodge Decomposition Theorem</h2>
+    <p>The Hodge Decomposition states that the space of differential $k$-forms on a closed Riemannian manifold splits into three mutually orthogonal subspaces:</p>
+    
+    <div class="math-block">
+        $$\Omega^k(M) = d\Omega^{k-1}(M) \oplus \delta\Omega^{k+1}(M) \oplus \mathcal{H}^k(M)$$
+    </div>
+    
+    <div class="image-placeholder">
+        
+    </div>
+
+    <p>Any $k$-form $\omega$ can be uniquely written as $\omega = d\alpha + \delta\beta + \gamma$, where:</p>
+    <ul>
+        <li><strong>$d\alpha$ (Exact Component):</strong> Path-independent. Analogous to a gradient flow.</li>
+        <li><strong>$\delta\beta$ (Co-Exact Component):</strong> Divergence-free. Analogous to circulating flows/swirls.</li>
+        <li><strong>$\gamma$ (Harmonic Component):</strong> Forms satisfying $\Delta_{dR} \gamma = (d\delta + \delta d)\gamma = 0$. These depend strictly on the manifold's topology (holes).</li>
+    </ul>
+
+    <h2>3. Solving the Differential Equations (2D Disk)</h2>
+    <p>Let's decompose a specific non-exact 1-form in Cartesian coordinates $(x,y)$ over the unit disk $D$ where $x^2 + y^2 \le 1$:</p>
+
+    <div class="math-block">
+        $$\omega = x^2y \, dx + xy^2 \, dy$$
+    </div>
+
+    <p>Because $\mathbb{R}^2$ has no holes, the harmonic component $\gamma = 0$. Our decomposition is $\omega = df + \delta\beta$, where $f(x,y)$ is a scalar 0-form and $\beta = g(x,y) dx \wedge dy$ is a 2-form. By applying the operators $d$ and $\delta$, we can decouple this into two standard Poisson equations:</p>
+
+    <div class="math-block">
+        $$\nabla^2 f = -\delta\omega = 4xy$$
+        $$\nabla^2 g = -\star d\omega = x^2 - y^2$$
+    </div>
+
+    <details>
+        <summary>► Mathematical Appendix 1: Proof of the Decoupling</summary>
+        <p>The decoupling relies on the nilpotence of the exterior derivative and codifferential: $d^2 = 0$ and $\delta^2 = 0$. Starting with $\omega = df + \delta\beta$:</p>
+        
+        <h4>Part 1: Isolating the Exact Potential ($f$)</h4>
+        <p><strong>1. Apply the codifferential ($\delta$) to both sides:</strong></p>
+        $$\delta\omega = \delta(df) + \delta(\delta\beta)$$
+        <p><strong>2. Apply Nilpotence ($\delta^2 = 0$):</strong></p>
+        $$\delta\omega = \delta d f + 0$$
+        <p><strong>3. Convert to the standard Laplacian:</strong> For a scalar function $f$, $\delta d f = -\nabla^2 f$. Therefore:</p>
+        $$-\nabla^2 f = \delta\omega \implies \nabla^2 f = -\delta\omega$$
+        <p>For our specific form $\omega = x^2y \, dx + xy^2 \, dy$, we compute $\delta\omega = -4xy$. Thus, $\nabla^2 f = 4xy$.</p>
+
+        <hr style="border:0; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+
+        <h4>Part 2: Isolating the Co-Exact Potential ($g$)</h4>
+        <p><strong>1. Apply the exterior derivative ($d$) to both sides:</strong></p>
+        $$d\omega = d(df) + d(\delta\beta)$$
+        <p><strong>2. Apply Nilpotence ($d^2 = 0$):</strong></p>
+        $$d\omega = 0 + d\delta\beta$$
+        <p><strong>3. Expand $\delta\beta$ in 2D:</strong> Given $\beta = g \, dx \wedge dy$, we apply $\delta = -\star d \star$:</p>
+        $$\delta\beta = -\star d \star (g \, dx \wedge dy) = -\star d(g) = -\star (g_x dx + g_y dy) = g_y dx - g_x dy$$
+        <p><strong>4. Apply $d$ and convert to the Laplacian:</strong></p>
+        $$d(\delta\beta) = d(g_y dx - g_x dy) = (-g_{xx} - g_{yy}) dx \wedge dy = -(\nabla^2 g) dx \wedge dy$$
+        <p>Therefore, $d\omega = -(\nabla^2 g) dx \wedge dy$. Applying the Hodge star to both sides yields the final scalar equation:</p>
+        $$\nabla^2 g = -\star d\omega$$
+        <p>For our specific form, $d\omega = (y^2 - x^2) dx \wedge dy$, so $\star d\omega = y^2 - x^2$. Thus, $\nabla^2 g = x^2 - y^2$.</p>
+    </details>
+
+    <div class="notation-note">
+        <h3>⚠️ Note on Notation: The Geometer's vs. Physicist's Laplacian</h3>
+        <p>The general operator acting on forms is the <strong>Laplace-de Rham operator</strong>, defined as $\Delta_{dR} = \delta d + d\delta$.</p>
+        <p>When acting on a scalar function $f$ (a 0-form), the codifferential $\delta$ lowers its degree to a -1 form. Since this doesn't exist, <strong>$\delta f = 0$ automatically</strong>. Therefore, the second term vanishes:</p>
+        $$\Delta_{dR} f = \delta d f + d(\delta f) = \delta d f + 0 = \delta d f$$
+        <p><strong>The Sign Difference:</strong> Geometers deliberately define $\Delta_{dR}$ using adjoints so that it is a <em>positive-definite</em> operator. However, in standard physics, the scalar Laplacian $\nabla^2 f = \nabla \cdot \nabla f$ is inherently <em>negative-definite</em>. Because they describe the same geometric curvature but with opposite sign conventions, we must write $\Delta_{dR} f = \delta d f = -\nabla^2 f$.</p>
+    </div>
+
+    <h3>The Boundary Conditions for Orthogonality</h3>
+    <p>Because we are integrating over a finite disk $D$, integrating by parts produces a boundary term. For the exact and co-exact components to remain strictly orthogonal ($\langle df, \delta\beta \rangle_{L^2} = 0$), Green's First Identity dictates that a specific boundary line integral must vanish.</p>
+    
+    <p>This forces a specific division of labor at the boundary $r=1$:</p>
+    <ol>
+        <li>The Exact component ($df$) must absorb 100% of the normal vector component of $\omega$. This is a <strong>Neumann boundary condition</strong>.</li>
+        <li>The Co-exact component ($\delta\beta$) must have a normal vector component of exactly 0 at the boundary. This is a <strong>Dirichlet boundary condition</strong> ($g = 0$ on the boundary).</li>
+    </ol>
+
+    <details open>
+        <summary>► Mathematical Appendix 2: Deriving the Boundary Conditions</summary>
+        <p>To understand why the boundary conditions must be set up this way, we translate our differential forms into standard 2D vector fields.</p>
+        
+        <div class="info-note">
+            <h4>📝 Clarifying Vector Notation: Angle Brackets vs. Basis Vectors</h4>
+            <p>In the math below, you will see vectors written with angle brackets, like $\langle \omega_x, \omega_y \rangle$. It is extremely important to note that <strong>this is not an inner product (scalar product)</strong>. In vector calculus, angle brackets are frequently used as <em>component notation</em> to define a vector's horizontal and vertical parts, distinguishing it from a coordinate point $(x,y)$.</p>
+            <p>To remove any ambiguity with the inner product $\langle \vec{A}, \vec{B} \rangle$, we provide both the component notation and the standard basis vector notation ($\hat{i}, \hat{j}$) side-by-side:</p>
+            <div class="image-placeholder">
+                
+            </div>
+        </div>
+
+        <ul>
+            <li>Original 1-form vector field: $\vec{V} = \langle \omega_x, \omega_y \rangle = \omega_x \hat{i} + \omega_y \hat{j}$</li>
+            <li>Exact part ($df$) as a gradient field: $\vec{E} = \nabla f = \langle f_x, f_y \rangle = f_x \hat{i} + f_y \hat{j}$</li>
+            <li>Co-exact part ($\delta\beta$) as a curl field: $\vec{C} = \nabla \times (g \hat{k}) = \langle g_y, -g_x \rangle = g_y \hat{i} - g_x \hat{j}$</li>
+        </ul>
+        <p>Our decomposition is $\vec{V} = \vec{E} + \vec{C}$. For the total energy to split perfectly, the cross-energy overlap between the two separated fields must be exactly zero over the entire disk $D$:</p>
+        $$\iint_D (\vec{E} \cdot \vec{C}) \, dA = \iint_D (\nabla f \cdot \vec{C}) \, dA = 0$$
+        
+        <h4>1. Applying the Divergence Theorem</h4>
+        <p>Using the vector identity $\nabla \cdot (f\vec{C}) = \nabla f \cdot \vec{C} + f(\nabla \cdot \vec{C})$ and noting that the divergence of a curl is zero ($\nabla \cdot \vec{C} = 0$), we rewrite the integral:</p>
+        $$\iint_D \nabla \cdot (f\vec{C}) \, dA$$
+        <p>By the Divergence Theorem, this 2D area integral becomes a 1D line integral around the boundary curve $\partial D$:</p>
+        $$\iint_D \nabla \cdot (f\vec{C}) \, dA = \oint_{\partial D} f (\vec{C} \cdot \hat{n}) \, ds$$
+        
+        <div class="image-placeholder">
+            
+        </div>
+
+        <p>For orthogonality, this boundary integral <strong>must be zero</strong> for any arbitrary scalar potential $f$. Therefore, we are forced to set:</p>
+        $$\vec{C} \cdot \hat{n} = 0 \text{ on } \partial D$$
+
+        <h4>2. The Dirichlet Condition for $g$</h4>
+        <p>On the unit circle, the outward normal is $\hat{n} = \langle x, y \rangle = x \hat{i} + y \hat{j}$ and the tangent vector is $\hat{t} = \langle -y, x \rangle = -y \hat{i} + x \hat{j}$. Let's calculate $\vec{C} \cdot \hat{n}$:</p>
+        $$\vec{C} \cdot \hat{n} = \langle g_y, -g_x \rangle \cdot \langle x, y \rangle = x g_y - y g_x$$
+        <p>Notice that the directional derivative of $g$ along the boundary tangent $\hat{t}$ is identical:</p>
+        $$\frac{\partial g}{\partial t} = \nabla g \cdot \hat{t} = \langle g_x, g_y \rangle \cdot \langle -y, x \rangle = -y g_x + x g_y$$
+        <p>Therefore, $\vec{C} \cdot \hat{n} = \frac{\partial g}{\partial t} = 0$. If the tangential derivative of $g$ is zero, $g$ must be constant on the boundary. We choose $g = 0$, giving us our <strong>Dirichlet condition</strong>.</p>
+
+        <h4>3. The Neumann Condition for $f$</h4>
+        <p>Taking the dot product of our original decomposition $\vec{V} = \vec{E} + \vec{C}$ with the normal vector $\hat{n}$ gives:</p>
+        $$\vec{V} \cdot \hat{n} = \vec{E} \cdot \hat{n} + \vec{C} \cdot \hat{n}$$
+        <p>Since we enforced $\vec{C} \cdot \hat{n} = 0$, that term vanishes. Substituting $\vec{E} = \nabla f$ gives:</p>
+        $$\vec{V} \cdot \hat{n} = \nabla f \cdot \hat{n} = \frac{\partial f}{\partial n} \text{ on } \partial D$$
+        <p>The exact part $f$ absorbs 100% of the normal boundary flux of the original field $\vec{V}$, giving us our <strong>Neumann condition</strong>.</p>
+    </details>
+
+    <div class="step-box">
+        <h4>Step 3A: Solving for the Exact Potential $f(x,y)$</h4>
+        <p><strong>1. Particular Solution:</strong> By inspecting polynomials, a solution to $\nabla^2 f = 4xy$ is $f_p = \frac{1}{3}(x^3y + xy^3)$.</p>
+        <p><strong>2. Check Boundary Normal:</strong> The normal vector on the unit circle is $\hat{n} = \langle x, y \rangle = x\hat{i} + y\hat{j}$. The normal component of our original form $\omega$ is $\hat{n} \cdot \omega = x(x^2y) + y(xy^2) = xy(x^2+y^2) = xy$. However, the normal derivative of our particular solution $\frac{\partial f_p}{\partial n}$ yields $\frac{4}{3}xy$.</p>
+        <p><strong>3. Harmonic Correction:</strong> We need to subtract $\frac{1}{3}xy$ from the boundary normal derivative without changing the interior Poisson equation. We add a harmonic function $h$ where $\nabla^2 h = 0$ and $\frac{\partial h}{\partial n} = -\frac{1}{3}xy$. The function $h(x,y) = -\frac{1}{6}xy$ perfectly satisfies this.</p>
+        <p><strong>Final Solution:</strong> $$f(x,y) = \frac{1}{3}(x^3y + xy^3) - \frac{1}{6}xy$$</p>
+    </div>
+
+    <div class="step-box">
+        <h4>Step 3B: Solving for the Co-Exact Potential $g(x,y)$</h4>
+        <p><strong>1. Particular Solution:</strong> A solution to $\nabla^2 g = x^2 - y^2$ is $g_p = \frac{1}{12}(x^4 - y^4)$.</p>
+        <p><strong>2. Check Dirichlet Boundary:</strong> We need $g = 0$ on the boundary $x^2+y^2=1$. Currently, on the boundary, $x^4-y^4 = (x^2-y^2)(x^2+y^2) = x^2-y^2$. So $g_p \neq 0$.</p>
+        <p><strong>3. Harmonic Correction:</strong> We must subtract $\frac{1}{12}(x^2-y^2)$ from our function. Because $(x^2-y^2)$ is itself a harmonic function ($\nabla^2(x^2-y^2) = 0$), we can subtract it directly without violating our underlying Poisson equation.</p>
+        <p><strong>Final Solution:</strong> $$g(x,y) = \frac{1}{12}(x^4 - y^4) - \frac{1}{12}(x^2 - y^2)$$</p>
+    </div>
+
+    <h2>4. Visualization of the Potentials</h2>
+    <p>Below are 3D surface plots of the exact potential $f(x,y)$ and the co-exact potential $g(x,y)$. Notice how the exact potential forms a "saddle" driving gradient flow, while the co-exact potential cleanly drops to exactly zero at the circular boundary ($r=1$) to satisfy our Dirichlet constraint.</p>
+
+    <div id="plot-exact" class="plot-container"></div>
+    <div id="plot-coexact" class="plot-container"></div>
+
+    <h2>5. The Final "Percentage of Exactness"</h2>
+    <p>Now that we have strictly orthogonal components, their energies (L<sup>2</sup> norms squared) satisfy the Pythagorean theorem:</p>
+    
+    <div class="math-block">
+        $$\|\omega\|^2 = \|df\|^2 + \|\delta\beta\|^2$$
+    </div>
+
+    <p>Integrating the squared vector magnitudes over the unit disk in polar coordinates yields:</p>
+
+    <ul>
+        <li><strong>Total Energy ($\|\omega\|^2$):</strong> $\frac{\pi}{32}$</li>
+        <li><strong>Energy of the Exact Part ($\|df\|^2$):</strong> $\frac{\pi}{36}$</li>
+        <li><strong>Energy of the Co-exact Part ($\|\delta\beta\|^2$):</strong> $\frac{\pi}{288}$</li>
+    </ul>
+
+    <p>Notice that $\frac{\pi}{36} + \frac{\pi}{288} = \frac{8\pi}{288} + \frac{\pi}{288} = \frac{\pi}{32}$. The sum of the parts perfectly equals the whole.</p>
+    
+    <p>To quantify how "quasi-exact" our original path-dependent field is, we divide the exact energy by the total energy:</p>
+
+    <div class="math-block">
+        $$\text{Percentage Exact} = \frac{\pi/36}{\pi/32} = \frac{8}{9} \approx 88.89\%$$
+    </div>
+
+    <p><strong>Conclusion:</strong> Even though $\omega = x^2y \, dx + xy^2 \, dy$ is officially non-exact, we have quantitatively proven that over a unit disk, <strong>88.89%</strong> of its energy behaves perfectly conservatively. Only the remaining 11.11% contributes to the non-exact, path-dependent swirl.</p>
+
+    <hr style="border:0; height:1px; background:#ddd; margin: 60px 0;">
+
+    <h2>6. Interactive Tool: The Linear Field Analyzer</h2>
+    <p>To see how exactness shifts dynamically without needing a complex algebraic solver, we can restrict our input to <strong>linear differential forms</strong>. Any linear 1-form $\omega = (Ax + By)dx + (Cx + Ey)dy$ can be instantly decomposed into a symmetric (Exact) matrix and an anti-symmetric (Co-exact) matrix.</p>
+    
+    <p>Adjust the coefficients below to see how the exact and co-exact components split, and watch the quasi-exactness percentage calculate in real-time over the unit disk.</p>
+
+    <div class="interactive-panel">
+        <div class="sliders-grid">
+            <div class="slider-group">
+                <label for="coeff-A">A (dx's x-coefficient): <span id="val-A-display">2.0</span></label>
+                <input type="range" id="coeff-A" min="-5" max="5" step="0.5" value="2">
+            </div>
+            <div class="slider-group">
+                <label for="coeff-B">B (dx's y-coefficient): <span id="val-B-display">1.0</span></label>
+                <input type="range" id="coeff-B" min="-5" max="5" step="0.5" value="1">
+            </div>
+            <div class="slider-group">
+                <label for="coeff-C">C (dy's x-coefficient): <span id="val-C-display">-3.0</span></label>
+                <input type="range" id="coeff-C" min="-5" max="5" step="0.5" value="-3">
+            </div>
+            <div class="slider-group">
+                <label for="coeff-E">E (dy's y-coefficient): <span id="val-E-display">1.0</span></label>
+                <input type="range" id="coeff-E" min="-5" max="5" step="0.5" value="1">
+            </div>
+        </div>
+
+        <h3>Your Form: &omega;</h3>
+        <div class="live-math" id="form-total">
+            &omega; = (<span id="out-A">2</span>x + <span id="out-B">1</span>y) dx + (<span id="out-C">-3</span>x + <span id="out-E">1</span>y) dy
+        </div>
+
+        <h3>The Hodge Decomposition</h3>
+        <p><strong>Exact Part ($d\alpha$):</strong> Driven by the symmetric components.</p>
+        <div class="live-math" id="form-exact">
+            d&alpha; = (<span id="out-eA">2</span>x + <span id="out-eB">-1</span>y) dx + (<span id="out-eC">-1</span>x + <span id="out-eE">1</span>y) dy
+        </div>
+
+        <p><strong>Co-Exact Part ($\delta\beta$):</strong> The remaining pure "swirl" (anti-symmetric).</p>
+        <div class="live-math" id="form-coexact">
+            &delta;&beta; = (<span id="out-cA">0</span>x + <span id="out-cB">2</span>y) dx + (<span id="out-cC">-2</span>x + <span id="out-cE">0</span>y) dy
+        </div>
+
+        <h3>Quasi-Exactness over Unit Disk</h3>
+        <div class="progress-container">
+            <div class="progress-bar" id="exactness-bar" style="width: 50%;"></div>
+            <div class="progress-text" id="exactness-text">50.00% Exact</div>
+        </div>
+    </div>
+
+    <script>
+        function updateAnalyzer() {
+            // Get slider values
+            const A = parseFloat(document.getElementById('coeff-A').value);
+            const B = parseFloat(document.getElementById('coeff-B').value);
+            const C = parseFloat(document.getElementById('coeff-C').value);
+            const E = parseFloat(document.getElementById('coeff-E').value);
+
+            // Update displays
+            document.getElementById('val-A-display').innerText = A.toFixed(1);
+            document.getElementById('val-B-display').innerText = B.toFixed(1);
+            document.getElementById('val-C-display').innerText = C.toFixed(1);
+            document.getElementById('val-E-display').innerText = E.toFixed(1);
+
+            document.getElementById('out-A').innerText = A;
+            document.getElementById('out-B').innerText = B;
+            document.getElementById('out-C').innerText = C;
+            document.getElementById('out-E').innerText = E;
+
+            // Calculate Decomposition (Symmetric / Anti-symmetric splitting)
+            const symCross = (B + C) / 2;
+            const antiCross = (B - C) / 2;
+
+            document.getElementById('out-eA').innerText = A;
+            document.getElementById('out-eB').innerText = symCross;
+            document.getElementById('out-eC').innerText = symCross;
+            document.getElementById('out-eE').innerText = E;
+
+            document.getElementById('out-cA').innerText = 0;
+            document.getElementById('out-cB').innerText = antiCross;
+            document.getElementById('out-cC').innerText = -antiCross;
+            document.getElementById('out-cE').innerText = 0;
+
+            // Calculate Energies over unit disk 
+            // Integrals of x^2 and y^2 are pi/4. Cross terms xy integrate to 0.
+            // Energy = (c1^2 + c2^2 + c3^2 + c4^2) * pi/4. We can drop pi/4 for ratios.
+            const energyTotal = (A*A) + (B*B) + (C*C) + (E*E);
+            let percentExact = 100;
+
+            if (energyTotal > 0) {
+                const energyExact = (A*A) + (symCross*symCross) + (symCross*symCross) + (E*E);
+                percentExact = (energyExact / energyTotal) * 100;
+            }
+
+            // Update UI
+            const bar = document.getElementById('exactness-bar');
+            bar.style.width = percentExact + '%';
+            document.getElementById('exactness-text').innerText = percentExact.toFixed(2) + '% Exact';
+
+            // Change color based on percentage
+            if (percentExact > 80) bar.style.backgroundColor = '#10b981'; // Green
+            else if (percentExact > 40) bar.style.backgroundColor = '#f59e0b'; // Orange
+            else bar.style.backgroundColor = '#ef4444'; // Red
+        }
+
+        // Attach event listeners to all sliders
+        const sliders = ['coeff-A', 'coeff-B', 'coeff-C', 'coeff-E'];
+        sliders.forEach(id => {
+            document.getElementById(id).addEventListener('input', updateAnalyzer);
+        });
+
+        // Initialize Plotly Charts from Section 4
+        const size = 60;
+        let x_grid = [], y_grid = [], zExact = [], zCoexact = [];
+
+        for (let i = 0; i < size; i++) {
+            let rowX = [], rowY = [], rowZE = [], rowZC = [];
+            let u = (i / (size - 1)) * 2 - 1; 
+            
+            for (let j = 0; j < size; j++) {
+                let v = (j / (size - 1)) * 2 - 1; 
+                if (u*u + v*v <= 1) {
+                    rowX.push(u);
+                    rowY.push(v);
+                    rowZE.push((1/3) * (Math.pow(u, 3)*v + u*Math.pow(v, 3)) - (1/6)*u*v);
+                    rowZC.push((1/12)*(Math.pow(u, 4) - Math.pow(v, 4)) - (1/12)*(Math.pow(u, 2) - Math.pow(v, 2)));
+                } else {
+                    rowX.push(u); rowY.push(v); rowZE.push(null); rowZC.push(null);
+                }
+            }
+            x_grid.push(rowX); y_grid.push(rowY); zExact.push(rowZE); zCoexact.push(rowZC);
+        }
+
+        Plotly.newPlot('plot-exact', [{
+            x: x_grid, y: y_grid, z: zExact, type: 'surface', colorscale: 'Viridis', name: 'Exact', showscale: false
+        }], { title: 'Exact Scalar Potential Surface f(x,y)', scene: { xaxis: {title: 'X'}, yaxis: {title: 'Y'}, zaxis: {title: 'f(x,y)'} }, margin: {l: 0, r: 0, b: 0, t: 40} });
+
+        Plotly.newPlot('plot-coexact', [{
+            x: x_grid, y: y_grid, z: zCoexact, type: 'surface', colorscale: 'Plasma', name: 'Co-exact', showscale: false
+        }], { title: 'Co-exact Scalar Potential Surface g(x,y)', scene: { xaxis: {title: 'X'}, yaxis: {title: 'Y'}, zaxis: {title: 'g(x,y)'} }, margin: {l: 0, r: 0, b: 0, t: 40} });
+
+        // Run the analyzer once on load
+        updateAnalyzer();
+    </script>
+</body>
+</html>
