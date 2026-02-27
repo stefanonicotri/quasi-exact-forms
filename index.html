@@ -18,6 +18,7 @@
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     <style>
+        /* Light Mode Variables (Default) */
         :root {
             --primary: #1e3a8a;
             --secondary: #2563eb;
@@ -29,7 +30,26 @@
             --warning-border: #d97706;
             --info-bg: #f8fafc;
             --info-border: #64748b;
+            --box-bg: #ffffff;
+            --border-color: #e5e7eb;
         }
+
+        /* Dark Mode Variables */
+        body.dark-mode {
+            --primary: #60a5fa;
+            --secondary: #3b82f6;
+            --background: #111827;
+            --text: #e5e7eb;
+            --math-bg: #1f2937;
+            --accent: #1e3a8a;
+            --warning-bg: #78350f;
+            --warning-border: #f59e0b;
+            --info-bg: #0f172a;
+            --info-border: #475569;
+            --box-bg: #1f2937;
+            --border-color: #374151;
+        }
+
         body {
             font-family: system-ui, -apple-system, sans-serif;
             line-height: 1.7;
@@ -38,27 +58,54 @@
             padding: 40px 20px;
             color: var(--text);
             background-color: var(--background);
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
+        
         h1, h2, h3, h4 {
             color: var(--primary);
             margin-top: 1.8em;
+            transition: color 0.3s ease;
         }
         h1 {
             border-bottom: 3px solid var(--secondary);
             padding-bottom: 10px;
         }
         h2 {
-            border-bottom: 1px solid #d1d5db;
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 5px;
         }
+        
+        /* Floating Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: var(--box-bg);
+            color: var(--text);
+            border: 2px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .theme-toggle:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+        }
+
         .abstract {
-            background-color: #ffffff;
+            background-color: var(--box-bg);
             padding: 25px 30px;
             border-radius: 8px;
             border-left: 5px solid var(--primary);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             font-size: 1.1em;
             margin: 30px 0 40px 0;
+            transition: background-color 0.3s ease;
         }
         .abstract h2 {
             margin-top: 0;
@@ -73,6 +120,7 @@
             margin: 20px 0;
             overflow-x: auto;
             border-radius: 4px;
+            transition: background-color 0.3s ease;
         }
         .definition {
             background-color: var(--accent);
@@ -80,6 +128,7 @@
             border-radius: 8px;
             margin: 20px 0;
             border-left: 4px solid #0369a1;
+            transition: background-color 0.3s ease;
         }
         .notation-note {
             background-color: var(--warning-bg);
@@ -87,6 +136,7 @@
             border-radius: 8px;
             margin: 20px 0;
             border-left: 4px solid var(--warning-border);
+            transition: background-color 0.3s ease;
         }
         .info-note {
             background-color: var(--info-bg);
@@ -94,31 +144,35 @@
             border-radius: 8px;
             margin: 20px 0;
             border-left: 4px solid var(--info-border);
+            transition: background-color 0.3s ease;
         }
         .step-box {
-            background-color: #fff;
-            border: 1px solid #e5e7eb;
+            background-color: var(--box-bg);
+            border: 1px solid var(--border-color);
             padding: 20px;
             margin: 20px 0;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         .plot-container {
             width: 100%;
             height: 550px;
             margin: 30px 0;
-            background: white;
-            border: 1px solid #e5e7eb;
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         details {
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
+            background: var(--box-bg);
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             padding: 10px 20px;
             margin: 20px 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: background-color 0.3s ease, border-color 0.3s ease;
         }
         summary {
             font-weight: bold;
@@ -127,6 +181,7 @@
             outline: none;
             font-size: 1.1em;
             padding: 5px 0;
+            transition: color 0.3s ease;
         }
         summary:hover {
             color: var(--secondary);
@@ -139,12 +194,13 @@
         }
         /* Interactive Section Styles */
         .interactive-panel {
-            background: #ffffff;
+            background: var(--box-bg);
             border: 2px solid var(--secondary);
             border-radius: 12px;
             padding: 30px;
             margin: 40px 0;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
         }
         .sliders-grid {
             display: grid;
@@ -171,15 +227,17 @@
             margin-top: 10px;
             font-size: 1.1em;
             text-align: center;
+            transition: background-color 0.3s ease;
         }
         .progress-container {
             width: 100%;
             height: 30px;
-            background-color: #e5e7eb;
+            background-color: var(--border-color);
             border-radius: 15px;
             overflow: hidden;
             margin-top: 20px;
             position: relative;
+            transition: background-color 0.3s ease;
         }
         .progress-bar {
             height: 100%;
@@ -200,6 +258,10 @@
     </style>
 </head>
 <body>
+
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
+        🌙 Dark Mode
+    </button>
 
     <h1>Quasi-Exact Differential Forms & Hodge Decomposition</h1>
     
@@ -257,7 +319,7 @@
         $$\star dx = dy, \quad \star dy = -dx$$
         $$\star 1 = dx \wedge dy, \quad \star(dx \wedge dy) = 1$$
 
-        <hr style="border:0; border-top: 1px solid #bae6fd; margin: 20px 0;">
+        <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;">
 
         <p><strong>Specialization to $\mathbb{R}^3$:</strong> In 3D Euclidean space ($n=3$) with volume form $dV = dx \wedge dy \wedge dz$, the Hodge star is the secret engine behind standard vector calculus. It establishes the duality between 1-forms (like work or circulation) and 2-forms (like flux). It effectively mimics the cross product!</p>
         <p><em>Mapping 1-forms to 2-forms (and vice versa):</em></p>
@@ -269,7 +331,7 @@
             
         </div>
 
-        <hr style="border:0; border-top: 1px solid #bae6fd; margin: 20px 0;">
+        <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;">
 
         <p><strong>Specialization to $\mathbb{R}^4$:</strong> In 4D Euclidean space ($n=4$) with coordinates $(x_1, x_2, x_3, x_4)$ and volume form $dV = dx_1 \wedge dx_2 \wedge dx_3 \wedge dx_4$, the Hodge star exhibits a fascinating property: it maps 2-forms directly to other 2-forms. This is the mathematical foundation of <em>self-dual</em> fields in gauge theory and electromagnetism.</p>
         <p><em>Mapping 2-forms to 2-forms:</em></p>
@@ -344,7 +406,7 @@
         $$-\nabla^2 f = \delta\omega \implies \nabla^2 f = -\delta\omega$$
         <p>For our specific form $\omega = x^2y \, dx + xy^2 \, dy$, we compute $\delta\omega = -4xy$. Thus, $\nabla^2 f = 4xy$.</p>
 
-        <hr style="border:0; border-top: 1px solid #e5e7eb; margin: 20px 0;">
+        <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;">
 
         <h4>Part 2: Isolating the Co-Exact Potential ($g$)</h4>
         <p><strong>1. Apply the exterior derivative ($d$) to both sides:</strong></p>
@@ -411,14 +473,29 @@
         <p>For orthogonality, this boundary integral <strong>must be zero</strong> for any arbitrary scalar potential $f$. Therefore, we are forced to set:</p>
         $$\vec{C} \cdot \hat{n} = 0 \text{ on } \partial D$$
 
-        <h4>2. The Dirichlet Condition for $g$</h4>
-        <p>On the unit circle, the outward normal is $\hat{n} = \langle x, y \rangle = x \hat{i} + y \hat{j}$ and the tangent vector is $\hat{t} = \langle -y, x \rangle = -y \hat{i} + x \hat{j}$. Let's calculate $\vec{C} \cdot \hat{n}$:</p>
+        <h4>2. The Geometry of the Boundary ($\hat{n}$ and $\hat{t}$)</h4>
+        <p>To evaluate the fields at the boundary of the unit circle ($x^2 + y^2 = 1$), we need its outward unit normal vector $\hat{n}$ and its counter-clockwise unit tangent vector $\hat{t}$.</p>
+        <ul>
+            <li><strong>The Outward Normal ($\hat{n}$):</strong> There are two ways to mathematically confirm this:
+                <ul>
+                    <li><em>The Geometric Approach:</em> The position vector pointing from the origin to any point $(x,y)$ on the unit circle is $\vec{r} = x\hat{i} + y\hat{j}$. Since a radius is always perpendicular to the circle's tangent, and its length is $\sqrt{x^2+y^2} = 1$, this position vector is exactly our outward unit normal: $\hat{n} = x\hat{i} + y\hat{j}$.</li>
+                    <li><em>The Calculus Approach (Gradient):</em> Define the 2D plane with the function $F(x,y) = x^2 + y^2$. The unit circle is simply the level curve $F(x,y) = 1$. The gradient $\nabla F$ always points perpendicular to level curves, giving us $\nabla F = 2x\hat{i} + 2y\hat{j}$. To make it a unit vector, we divide by its magnitude on the circle ($\|\nabla F\| = \sqrt{(2x)^2+(2y)^2} = 2\sqrt{x^2+y^2} = 2(1) = 2$). Therefore, $\hat{n} = \frac{\nabla F}{\|\nabla F\|} = \frac{2x\hat{i} + 2y\hat{j}}{2} = x\hat{i} + y\hat{j}$.</li>
+                </ul>
+            </li>
+            <li><strong>The Tangent Vector ($\hat{t}$):</strong> A tangent vector must be perfectly orthogonal to the normal, meaning their dot product is zero ($\hat{n} \cdot \hat{t} = 0$). By swapping the $x$ and $y$ components and negating one, we satisfy this: $x(-y) + y(x) = 0$. We choose $\hat{t} = -y\hat{i} + x\hat{j}$ (rather than $y\hat{i} - x\hat{j}$) because evaluating it at $(1,0)$ gives $0\hat{i} + 1\hat{j}$, which points UP, matching the standard counter-clockwise (positive) orientation required by Green's Theorem.</li>
+        </ul>
+        <div class="image-placeholder">
+            
+        </div>
+
+        <h4>3. The Dirichlet Condition for $g$</h4>
+        <p>Using the boundary vectors derived above, let's calculate $\vec{C} \cdot \hat{n}$:</p>
         $$\vec{C} \cdot \hat{n} = \langle g_y, -g_x \rangle \cdot \langle x, y \rangle = x g_y - y g_x$$
         <p>Notice that the directional derivative of $g$ along the boundary tangent $\hat{t}$ is identical:</p>
         $$\frac{\partial g}{\partial t} = \nabla g \cdot \hat{t} = \langle g_x, g_y \rangle \cdot \langle -y, x \rangle = -y g_x + x g_y$$
         <p>Therefore, $\vec{C} \cdot \hat{n} = \frac{\partial g}{\partial t} = 0$. If the tangential derivative of $g$ is zero, $g$ must be constant on the boundary. We choose $g = 0$, giving us our <strong>Dirichlet condition</strong>.</p>
 
-        <h4>3. The Neumann Condition for $f$</h4>
+        <h4>4. The Neumann Condition for $f$</h4>
         <p>Taking the dot product of our original decomposition $\vec{V} = \vec{E} + \vec{C}$ with the normal vector $\hat{n}$ gives:</p>
         $$\vec{V} \cdot \hat{n} = \vec{E} \cdot \hat{n} + \vec{C} \cdot \hat{n}$$
         <p>Since we enforced $\vec{C} \cdot \hat{n} = 0$, that term vanishes. Substituting $\vec{E} = \nabla f$ gives:</p>
@@ -473,7 +550,7 @@
 
     <p><strong>Conclusion:</strong> Even though $\omega = x^2y \, dx + xy^2 \, dy$ is officially non-exact, we have quantitatively proven that over a unit disk, <strong>88.89%</strong> of its energy behaves perfectly conservatively. Only the remaining 11.11% contributes to the non-exact, path-dependent swirl.</p>
 
-    <hr style="border:0; height:1px; background:#ddd; margin: 60px 0;">
+    <hr style="border:0; height:1px; background:var(--border-color); margin: 60px 0;">
 
     <h2>6. Interactive Tool: The Linear Field Analyzer</h2>
     <p>To see how exactness shifts dynamically without needing a complex algebraic solver, we can restrict our input to <strong>linear differential forms</strong>. Any linear 1-form $\omega = (Ax + By)dx + (Cx + Ey)dy$ can be instantly decomposed into a symmetric (Exact) matrix and an anti-symmetric (Co-exact) matrix.</p>
@@ -524,14 +601,53 @@
     </div>
 
     <script>
+        // --- THEME TOGGLE LOGIC ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeToggleBtn.innerText = '☀️ Light Mode';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            const isDark = body.classList.contains('dark-mode');
+            
+            if (isDark) {
+                localStorage.setItem('theme', 'dark');
+                themeToggleBtn.innerText = '☀️ Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeToggleBtn.innerText = '🌙 Dark Mode';
+            }
+            
+            // Update Plotly chart colors dynamically
+            updatePlotlyTheme(isDark);
+        });
+
+        function updatePlotlyTheme(isDark) {
+            const bgColor = isDark ? '#1f2937' : '#ffffff';
+            const fontColor = isDark ? '#e5e7eb' : '#1f2937';
+            
+            const layoutUpdate = {
+                'paper_bgcolor': bgColor,
+                'plot_bgcolor': bgColor,
+                'font.color': fontColor
+            };
+
+            Plotly.relayout('plot-exact', layoutUpdate);
+            Plotly.relayout('plot-coexact', layoutUpdate);
+        }
+
+        // --- INTERACTIVE TOOL LOGIC ---
         function updateAnalyzer() {
-            // Get slider values
             const A = parseFloat(document.getElementById('coeff-A').value);
             const B = parseFloat(document.getElementById('coeff-B').value);
             const C = parseFloat(document.getElementById('coeff-C').value);
             const E = parseFloat(document.getElementById('coeff-E').value);
 
-            // Update displays
             document.getElementById('val-A-display').innerText = A.toFixed(1);
             document.getElementById('val-B-display').innerText = B.toFixed(1);
             document.getElementById('val-C-display').innerText = C.toFixed(1);
@@ -542,7 +658,6 @@
             document.getElementById('out-C').innerText = C;
             document.getElementById('out-E').innerText = E;
 
-            // Calculate Decomposition (Symmetric / Anti-symmetric splitting)
             const symCross = (B + C) / 2;
             const antiCross = (B - C) / 2;
 
@@ -556,9 +671,6 @@
             document.getElementById('out-cC').innerText = -antiCross;
             document.getElementById('out-cE').innerText = 0;
 
-            // Calculate Energies over unit disk 
-            // Integrals of x^2 and y^2 are pi/4. Cross terms xy integrate to 0.
-            // Energy = (c1^2 + c2^2 + c3^2 + c4^2) * pi/4. We can drop pi/4 for ratios.
             const energyTotal = (A*A) + (B*B) + (C*C) + (E*E);
             let percentExact = 100;
 
@@ -567,24 +679,21 @@
                 percentExact = (energyExact / energyTotal) * 100;
             }
 
-            // Update UI
             const bar = document.getElementById('exactness-bar');
             bar.style.width = percentExact + '%';
             document.getElementById('exactness-text').innerText = percentExact.toFixed(2) + '% Exact';
 
-            // Change color based on percentage
-            if (percentExact > 80) bar.style.backgroundColor = '#10b981'; // Green
-            else if (percentExact > 40) bar.style.backgroundColor = '#f59e0b'; // Orange
-            else bar.style.backgroundColor = '#ef4444'; // Red
+            if (percentExact > 80) bar.style.backgroundColor = '#10b981'; 
+            else if (percentExact > 40) bar.style.backgroundColor = '#f59e0b'; 
+            else bar.style.backgroundColor = '#ef4444'; 
         }
 
-        // Attach event listeners to all sliders
         const sliders = ['coeff-A', 'coeff-B', 'coeff-C', 'coeff-E'];
         sliders.forEach(id => {
             document.getElementById(id).addEventListener('input', updateAnalyzer);
         });
 
-        // Initialize Plotly Charts from Section 4
+        // --- PLOTLY INITIALIZATION ---
         const size = 60;
         let x_grid = [], y_grid = [], zExact = [], zCoexact = [];
 
@@ -606,15 +715,25 @@
             x_grid.push(rowX); y_grid.push(rowY); zExact.push(rowZE); zCoexact.push(rowZC);
         }
 
+        const isInitiallyDark = localStorage.getItem('theme') === 'dark';
+        const initBgColor = isInitiallyDark ? '#1f2937' : '#ffffff';
+        const initFontColor = isInitiallyDark ? '#e5e7eb' : '#1f2937';
+
+        const baseLayout = {
+            paper_bgcolor: initBgColor,
+            plot_bgcolor: initBgColor,
+            font: { color: initFontColor },
+            margin: {l: 0, r: 0, b: 0, t: 40}
+        };
+
         Plotly.newPlot('plot-exact', [{
             x: x_grid, y: y_grid, z: zExact, type: 'surface', colorscale: 'Viridis', name: 'Exact', showscale: false
-        }], { title: 'Exact Scalar Potential Surface f(x,y)', scene: { xaxis: {title: 'X'}, yaxis: {title: 'Y'}, zaxis: {title: 'f(x,y)'} }, margin: {l: 0, r: 0, b: 0, t: 40} });
+        }], { ...baseLayout, title: 'Exact Scalar Potential Surface f(x,y)', scene: { xaxis: {title: 'X'}, yaxis: {title: 'Y'}, zaxis: {title: 'f(x,y)'} } });
 
         Plotly.newPlot('plot-coexact', [{
             x: x_grid, y: y_grid, z: zCoexact, type: 'surface', colorscale: 'Plasma', name: 'Co-exact', showscale: false
-        }], { title: 'Co-exact Scalar Potential Surface g(x,y)', scene: { xaxis: {title: 'X'}, yaxis: {title: 'Y'}, zaxis: {title: 'g(x,y)'} }, margin: {l: 0, r: 0, b: 0, t: 40} });
+        }], { ...baseLayout, title: 'Co-exact Scalar Potential Surface g(x,y)', scene: { xaxis: {title: 'X'}, yaxis: {title: 'Y'}, zaxis: {title: 'g(x,y)'} } });
 
-        // Run the analyzer once on load
         updateAnalyzer();
     </script>
 </body>
