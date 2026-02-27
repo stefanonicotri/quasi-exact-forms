@@ -9,14 +9,14 @@
 \usepackage{hyperref}
 \usepackage{enumitem}
 
-% Setup custom colored boxes to match the HTML styling (Fixed title brackets!)
+% Setup custom colored boxes to match the HTML styling
 \newtcolorbox{defbox}[1]{colback=blue!5, colframe=blue!75!black, fonttitle=\bfseries, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, top=10pt, bottom=10pt}
 \newtcolorbox{warnbox}[1]{colback=yellow!10, colframe=orange!90!black, fonttitle=\bfseries, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, top=10pt, bottom=10pt}
 \newtcolorbox{stepbox}[1]{colback=white, colframe=gray!40, fonttitle=\bfseries, coltitle=black, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt}
 
 \title{\textbf{Quasi-Exact Differential Forms \& Hodge Decomposition}}
-\date{}
 \author{Stefano Nicotri}
+\date{}
 
 \begin{document}
 
@@ -27,6 +27,8 @@
 
 This document explores the concept of \textbf{quasi-exactness}---the mathematical framework used to definitively measure exactly \textit{how} conservative a path-dependent field is. By utilizing the \textbf{Hodge Decomposition Theorem}, we can mathematically slice any messy, non-exact differential form into perfectly orthogonal "exact" (gradient) and "co-exact" (swirling) components. By comparing the $L^2$ norms (energies) of these separated layers, we can assign a strict, quantitative percentage to the field's exactness.
 \end{abstract}
+
+
 
 \vspace{1em}
 
@@ -68,6 +70,8 @@ where $\alpha$ and $\beta$ are any two $k$-forms, and $\langle \alpha, \beta \ra
 \textbf{Specialization to $\mathbb{R}^3$:} In 3D Euclidean space ($n=3$) with volume form $dV = dx \wedge dy \wedge dz$, the Hodge star establishes the duality between 1-forms and 2-forms, mimicking the cross product:
 \[ \star dx = dy \wedge dz, \quad \star dy = dz \wedge dx, \quad \star dz = dx \wedge dy \]
 \[ \star(dy \wedge dz) = dx, \quad \star(dz \wedge dx) = dy, \quad \star(dx \wedge dy) = dz \]
+
+
 
 \textbf{Specialization to $\mathbb{R}^4$:} In 4D Euclidean space ($n=4$), the Hodge star maps 2-forms directly to other 2-forms, forming the foundation of \textit{self-dual} fields in gauge theory:
 \[ \star(dx_1 \wedge dx_2) = dx_3 \wedge dx_4 \]
@@ -127,16 +131,62 @@ For a 0-form $f$, $\delta f = 0$, so $\Delta_{dR} f = \delta d f$.
 Geometers define $\Delta_{dR}$ to be \textit{positive-definite}. However, the standard physics Laplacian $\nabla^2 f = \nabla \cdot \nabla f$ is \textit{negative-definite}. Therefore, we must write $\Delta_{dR} f = \delta d f = -\nabla^2 f$.
 \end{warnbox}
 
-\subsection*{The Boundary Conditions for Orthogonality}
-Because we integrate over a finite disk $D$, integrating by parts produces a boundary term. For components to remain strictly orthogonal ($\langle df, \delta\beta \rangle_{L^2} = 0$), Green's First Identity forces a specific division of labor at the boundary $r=1$:
-\begin{enumerate}[noitemsep]
-    \item The Exact component ($df$) must absorb 100\% of the normal vector component of $\omega$ (\textbf{Neumann condition}).
-    \item The Co-exact component ($\delta\beta$) must have a normal vector component of exactly 0 at the boundary (\textbf{Dirichlet condition}, $g = 0$).
-\end{enumerate}
+\subsection*{Mathematical Appendix 2: Deriving the Boundary Conditions}
+To understand why the boundary conditions must be set up this way, we translate our differential forms into standard 2D vector fields.
 
 \begin{defbox}{Clarifying Vector Notation}
-When translating forms to vector fields, $\langle \omega_x, \omega_y \rangle$ represents \textit{component notation} (i.e., $\omega_x \hat{i} + \omega_y \hat{j}$), NOT an inner product. 
+In the math below, you will see vectors written with angle brackets, like $\langle \omega_x, \omega_y \rangle$. It is extremely important to note that \textbf{this is not an inner product (scalar product)}. In vector calculus, angle brackets are frequently used as \textit{component notation} to define a vector's horizontal and vertical parts, distinguishing it from a coordinate point $(x,y)$.
 \end{defbox}
+
+\begin{itemize}[noitemsep]
+    \item Original 1-form vector field: $\vec{V} = \langle \omega_x, \omega_y \rangle = \omega_x \hat{i} + \omega_y \hat{j}$
+    \item Exact part ($df$) as a gradient field: $\vec{E} = \nabla f = \langle f_x, f_y \rangle = f_x \hat{i} + f_y \hat{j}$
+    \item Co-exact part ($\delta\beta$) as a curl field: $\vec{C} = \nabla \times (g \hat{k}) = \langle g_y, -g_x \rangle = g_y \hat{i} - g_x \hat{j}$
+\end{itemize}
+
+Our decomposition is $\vec{V} = \vec{E} + \vec{C}$. For the total energy to split perfectly, the cross-energy overlap between the two separated fields must be exactly zero over the entire disk $D$:
+\[ \iint_D (\vec{E} \cdot \vec{C}) \, dA = \iint_D (\nabla f \cdot \vec{C}) \, dA = 0 \]
+
+\subsubsection*{1. Applying the Divergence Theorem}
+Using the vector identity $\nabla \cdot (f\vec{C}) = \nabla f \cdot \vec{C} + f(\nabla \cdot \vec{C})$ and noting that the divergence of a curl is zero ($\nabla \cdot \vec{C} = 0$), we rewrite the integral:
+\[ \iint_D \nabla \cdot (f\vec{C}) \, dA \]
+By the Divergence Theorem, this 2D area integral becomes a 1D line integral around the boundary curve $\partial D$:
+\[ \iint_D \nabla \cdot (f\vec{C}) \, dA = \oint_{\partial D} f (\vec{C} \cdot \hat{n}) \, ds \]
+
+
+
+For orthogonality, this boundary integral \textbf{must be zero} for any arbitrary scalar potential $f$. Therefore, we are forced to set:
+\[ \vec{C} \cdot \hat{n} = 0 \text{ on } \partial D \]
+
+\subsubsection*{2. The Geometry of the Boundary ($\hat{n}$ and $\hat{t}$)}
+To evaluate the fields at the boundary of the unit circle ($x^2 + y^2 = 1$), we need its outward unit normal vector $\hat{n}$ and its counter-clockwise unit tangent vector $\hat{t}$.
+
+\begin{itemize}
+    \item \textbf{The Outward Normal ($\hat{n}$):} There are two ways to mathematically confirm this:
+    \begin{itemize}
+        \item \textit{The Geometric Approach:} The position vector pointing from the origin to any point $(x,y)$ on the unit circle is $\vec{r} = x\hat{i} + y\hat{j}$. Since a radius is always perpendicular to the circle's tangent, and its length is $\sqrt{x^2+y^2} = 1$, this position vector is exactly our outward unit normal: $\hat{n} = x\hat{i} + y\hat{j}$.
+        \item \textit{The Calculus Approach (Gradient):} Define the 2D plane with the function $F(x,y) = x^2 + y^2$. The unit circle is simply the level curve $F(x,y) = 1$. The gradient $\nabla F$ always points perpendicular to level curves, giving us $\nabla F = 2x\hat{i} + 2y\hat{j}$. To make it a unit vector, we divide by its magnitude on the circle ($\|\nabla F\| = \sqrt{(2x)^2+(2y)^2} = 2\sqrt{x^2+y^2} = 2(1) = 2$). Therefore, $\hat{n} = \frac{\nabla F}{\|\nabla F\|} = \frac{2x\hat{i} + 2y\hat{j}}{2} = x\hat{i} + y\hat{j}$.
+    \end{itemize}
+    \item \textbf{The Tangent Vector ($\hat{t}$):} A tangent vector must be perfectly orthogonal to the normal, meaning their dot product is zero ($\hat{n} \cdot \hat{t} = 0$). By swapping the $x$ and $y$ components and negating one, we satisfy this: $x(-y) + y(x) = 0$. We choose $\hat{t} = -y\hat{i} + x\hat{j}$ (rather than $y\hat{i} - x\hat{j}$) because evaluating it at $(1,0)$ gives $0\hat{i} + 1\hat{j}$, which points UP, matching the standard counter-clockwise (positive) orientation required by Green's Theorem.
+\end{itemize}
+
+
+
+\subsubsection*{3. The Dirichlet Condition for $g$}
+Using the boundary vectors derived above, let's calculate $\vec{C} \cdot \hat{n}$:
+\[ \vec{C} \cdot \hat{n} = \langle g_y, -g_x \rangle \cdot \langle x, y \rangle = x g_y - y g_x \]
+Notice that the directional derivative of $g$ along the boundary tangent $\hat{t}$ is identical:
+\[ \frac{\partial g}{\partial t} = \nabla g \cdot \hat{t} = \langle g_x, g_y \rangle \cdot \langle -y, x \rangle = -y g_x + x g_y \]
+Therefore, $\vec{C} \cdot \hat{n} = \frac{\partial g}{\partial t} = 0$. If the tangential derivative of $g$ is zero, $g$ must be constant on the boundary. We choose $g = 0$, giving us our \textbf{Dirichlet condition}.
+
+\subsubsection*{4. The Neumann Condition for $f$}
+Taking the dot product of our original decomposition $\vec{V} = \vec{E} + \vec{C}$ with the normal vector $\hat{n}$ gives:
+\[ \vec{V} \cdot \hat{n} = \vec{E} \cdot \hat{n} + \vec{C} \cdot \hat{n} \]
+Since we enforced $\vec{C} \cdot \hat{n} = 0$, that term vanishes. Substituting $\vec{E} = \nabla f$ gives:
+\[ \vec{V} \cdot \hat{n} = \nabla f \cdot \hat{n} = \frac{\partial f}{\partial n} \text{ on } \partial D \]
+The exact part $f$ absorbs 100\% of the normal boundary flux of the original field $\vec{V}$, giving us our \textbf{Neumann condition}.
+
+\vspace{1em}
 
 \begin{stepbox}{Step 3A: Solving for the Exact Potential $f(x,y)$}
 \textbf{Particular Solution:} $\nabla^2 f = 4xy \implies f_p = \frac{1}{3}(x^3y + xy^3)$. \\
