@@ -5,14 +5,15 @@
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage[margin=1in]{geometry}
 \usepackage{graphicx}
-\usepackage{tcolorbox}
+\usepackage[most]{tcolorbox} % Added [most] to enable breakable boxes
 \usepackage{hyperref}
 \usepackage{enumitem}
 
 % Setup custom colored boxes to match the HTML styling
-\newtcolorbox{defbox}[1]{colback=blue!5, colframe=blue!75!black, fonttitle=\bfseries, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, top=10pt, bottom=10pt}
-\newtcolorbox{warnbox}[1]{colback=yellow!10, colframe=orange!90!black, fonttitle=\bfseries, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, top=10pt, bottom=10pt}
-\newtcolorbox{stepbox}[1]{colback=white, colframe=gray!40, fonttitle=\bfseries, coltitle=black, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt}
+% Added "breakable" so long derivation boxes flow perfectly across pages
+\newtcolorbox{defbox}[1]{colback=blue!5, colframe=blue!75!black, fonttitle=\bfseries, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, top=10pt, bottom=10pt, breakable}
+\newtcolorbox{warnbox}[1]{colback=yellow!10, colframe=orange!90!black, fonttitle=\bfseries, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, top=10pt, bottom=10pt, breakable}
+\newtcolorbox{stepbox}[1]{colback=white, colframe=gray!40, fonttitle=\bfseries, coltitle=black, title={#1}, arc=4pt, boxrule=1pt, left=10pt, right=10pt, breakable}
 
 \title{\textbf{Quasi-Exact Differential Forms \& Hodge Decomposition}}
 \author{Stefano Nicotri}
@@ -188,16 +189,40 @@ The exact part $f$ absorbs 100\% of the normal boundary flux of the original fie
 
 \vspace{1em}
 
-\begin{stepbox}{Step 3A: Solving for the Exact Potential $f(x,y)$}
-\textbf{Particular Solution:} $\nabla^2 f = 4xy \implies f_p = \frac{1}{3}(x^3y + xy^3)$. \\
-\textbf{Harmonic Correction:} To satisfy the Neumann boundary condition on the unit circle without breaking the Poisson equation, we subtract $h(x,y) = \frac{1}{6}xy$. \\
-\textbf{Final Solution:} $f(x,y) = \frac{1}{3}(x^3y + xy^3) - \frac{1}{6}xy$
+\begin{stepbox}{Step 3A: Explicit Derivation of the Exact Potential $f(x,y)$}
+\textbf{Passage 1: The Intuition}\\
+Imagine fluid flowing through our 2D disk. The original vector field $\vec{V}$ dictates how the fluid moves, including how it pushes in and out of the boundary edge. Because we already forced Team Co-exact ($\vec{C}$) to follow a Dirichlet condition ($\vec{C} \cdot \hat{n} = 0$), it is banned from crossing the border. Therefore, Team Exact ($\nabla f$) must handle 100\% of the boundary flux. This division of labor is what the Neumann boundary condition represents.
+
+
+
+\textbf{Passage 2: The Algebraic Derivation}\\
+We start with our fundamental decomposition on the boundary $\partial D$: $\vec{V} = \nabla f + \vec{C}$. Taking the dot product with the normal vector gives $\vec{V} \cdot \hat{n} = (\nabla f \cdot \hat{n}) + (\vec{C} \cdot \hat{n})$. Because $\vec{C} \cdot \hat{n} = 0$, the term vanishes. Since $\nabla f \cdot \hat{n}$ is the normal directional derivative $\frac{\partial f}{\partial n}$, we are left with our strict rule: $\frac{\partial f}{\partial n} = \vec{V} \cdot \hat{n}$.
+
+\textbf{Passage 3: Finding Our Target Boundary Condition}\\
+We evaluate $\vec{V} \cdot \hat{n}$ using our specific vector field $\vec{V} = \langle x^2y, xy^2 \rangle$ and unit normal $\hat{n} = \langle x, y \rangle$. The dot product yields $x^3y + xy^3 = xy(x^2 + y^2)$. Because we are strictly evaluating this on the boundary (the unit circle where $x^2 + y^2 = 1$), this simplifies perfectly to $\vec{V} \cdot \hat{n} = xy(1) = xy$. Thus, our exact potential must satisfy $\frac{\partial f}{\partial n} = xy$.
+
+\textbf{Passage 4: Testing Our Particular Solution}\\
+Our particular solution for the interior Poisson equation ($\nabla^2 f = 4xy$) is $f_p(x,y) = \frac{1}{3}(x^3y + xy^3)$. Does it meet the boundary target? The gradient is $\nabla f_p = \langle x^2y + \frac{1}{3}y^3, \frac{1}{3}x^3 + xy^2 \rangle$. Dotting this with $\hat{n} = \langle x,y \rangle$ gives $\frac{4}{3}x^3y + \frac{4}{3}xy^3 = \frac{4}{3}xy(x^2 + y^2)$. On the boundary, this becomes $\frac{4}{3}xy$. Our target is $1xy$, meaning our solution is pushing too much fluid across the border.
+
+\textbf{Passage 5: The Harmonic Correction}\\
+We must subtract exactly $\frac{1}{3}xy$ from the boundary flow. To avoid ruining the interior Poisson equation we already solved, we add a harmonic function $h(x,y)$ where $\nabla^2 h = 0$ and $\frac{\partial h}{\partial n} = -\frac{1}{3}xy$. A simple polynomial $h(x,y) = Cxy$ yields $\frac{\partial h}{\partial n} = 2Cxy$. Setting $2Cxy = -\frac{1}{3}xy$ gives $C = -\frac{1}{6}$. Therefore, our correcting harmonic function is $h(x,y) = -\frac{1}{6}xy$.
+
+\vspace{0.5em}
+\hrule
+\vspace{0.5em}
+\textbf{Final Solution:} 
+\[ f(x,y) = f_p(x,y) + h(x,y) = \frac{1}{3}(x^3y + xy^3) - \frac{1}{6}xy \]
 \end{stepbox}
 
 \begin{stepbox}{Step 3B: Solving for the Co-Exact Potential $g(x,y)$}
 \textbf{Particular Solution:} $\nabla^2 g = x^2 - y^2 \implies g_p = \frac{1}{12}(x^4 - y^4)$. \\
-\textbf{Harmonic Correction:} To satisfy the Dirichlet boundary condition ($g=0$) on the unit circle, we subtract the harmonic function $h(x,y) = \frac{1}{12}(x^2 - y^2)$. \\
-\textbf{Final Solution:} $g(x,y) = \frac{1}{12}(x^4 - y^4) - \frac{1}{12}(x^2 - y^2)$
+\textbf{Harmonic Correction:} To satisfy the Dirichlet boundary condition ($g=0$) on the unit circle, we subtract the harmonic function $h(x,y) = \frac{1}{12}(x^2 - y^2)$. 
+
+\vspace{0.5em}
+\hrule
+\vspace{0.5em}
+\textbf{Final Solution:} 
+\[ g(x,y) = \frac{1}{12}(x^4 - y^4) - \frac{1}{12}(x^2 - y^2) \]
 \end{stepbox}
 
 \section{The Final "Percentage of Exactness"}

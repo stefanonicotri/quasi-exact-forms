@@ -504,11 +504,29 @@
     </details>
 
     <div class="step-box">
-        <h4>Step 3A: Solving for the Exact Potential $f(x,y)$</h4>
-        <p><strong>1. Particular Solution:</strong> By inspecting polynomials, a solution to $\nabla^2 f = 4xy$ is $f_p = \frac{1}{3}(x^3y + xy^3)$.</p>
-        <p><strong>2. Check Boundary Normal:</strong> The normal vector on the unit circle is $\hat{n} = \langle x, y \rangle = x\hat{i} + y\hat{j}$. The normal component of our original form $\omega$ is $\hat{n} \cdot \omega = x(x^2y) + y(xy^2) = xy(x^2+y^2) = xy$. However, the normal derivative of our particular solution $\frac{\partial f_p}{\partial n}$ yields $\frac{4}{3}xy$.</p>
-        <p><strong>3. Harmonic Correction:</strong> We need to subtract $\frac{1}{3}xy$ from the boundary normal derivative without changing the interior Poisson equation. We add a harmonic function $h$ where $\nabla^2 h = 0$ and $\frac{\partial h}{\partial n} = -\frac{1}{3}xy$. The function $h(x,y) = -\frac{1}{6}xy$ perfectly satisfies this.</p>
-        <p><strong>Final Solution:</strong> $$f(x,y) = \frac{1}{3}(x^3y + xy^3) - \frac{1}{6}xy$$</p>
+        <h4>Step 3A: Explicit Derivation of the Exact Potential $f(x,y)$</h4>
+        
+        <p><strong>Passage 1: The Intuition</strong><br>
+        Imagine fluid flowing through our 2D disk. The original vector field $\vec{V}$ dictates how the fluid moves, including how it pushes in and out of the boundary edge. Because we already forced Team Co-exact ($\vec{C}$) to follow a Dirichlet condition ($\vec{C} \cdot \hat{n} = 0$), it is banned from crossing the border. Therefore, Team Exact ($\nabla f$) must handle 100% of the boundary flux. This division of labor is what the Neumann boundary condition represents.</p>
+        <div class="image-placeholder">
+            
+        </div>
+
+        <p><strong>Passage 2: The Algebraic Derivation</strong><br>
+        We start with our fundamental decomposition on the boundary $\partial D$: $\vec{V} = \nabla f + \vec{C}$. Taking the dot product with the normal vector gives $\vec{V} \cdot \hat{n} = (\nabla f \cdot \hat{n}) + (\vec{C} \cdot \hat{n})$. Because $\vec{C} \cdot \hat{n} = 0$, the term vanishes. Since $\nabla f \cdot \hat{n}$ is the normal directional derivative $\frac{\partial f}{\partial n}$, we are left with our strict rule: $\frac{\partial f}{\partial n} = \vec{V} \cdot \hat{n}$.</p>
+
+        <p><strong>Passage 3: Finding Our Target Boundary Condition</strong><br>
+        We evaluate $\vec{V} \cdot \hat{n}$ using our specific vector field $\vec{V} = \langle x^2y, xy^2 \rangle$ and unit normal $\hat{n} = \langle x, y \rangle$. The dot product yields $x^3y + xy^3 = xy(x^2 + y^2)$. Because we are strictly evaluating this on the boundary (the unit circle where $x^2 + y^2 = 1$), this simplifies perfectly to $\vec{V} \cdot \hat{n} = xy(1) = xy$. Thus, our exact potential must satisfy $\frac{\partial f}{\partial n} = xy$.</p>
+
+        <p><strong>Passage 4: Testing Our Particular Solution</strong><br>
+        Our particular solution for the interior Poisson equation ($\nabla^2 f = 4xy$) is $f_p(x,y) = \frac{1}{3}(x^3y + xy^3)$. Does it meet the boundary target? The gradient is $\nabla f_p = \langle x^2y + \frac{1}{3}y^3, \frac{1}{3}x^3 + xy^2 \rangle$. Dotting this with $\hat{n} = \langle x,y \rangle$ gives $\frac{4}{3}x^3y + \frac{4}{3}xy^3 = \frac{4}{3}xy(x^2 + y^2)$. On the boundary, this becomes $\frac{4}{3}xy$. Our target is $1xy$, meaning our solution is pushing too much fluid across the border.</p>
+
+        <p><strong>Passage 5: The Harmonic Correction</strong><br>
+        We must subtract exactly $\frac{1}{3}xy$ from the boundary flow. To avoid ruining the interior Poisson equation we already solved, we add a harmonic function $h(x,y)$ where $\nabla^2 h = 0$ and $\frac{\partial h}{\partial n} = -\frac{1}{3}xy$. A simple polynomial $h(x,y) = Cxy$ yields $\frac{\partial h}{\partial n} = 2Cxy$. Setting $2Cxy = -\frac{1}{3}xy$ gives $C = -\frac{1}{6}$. Therefore, our correcting harmonic function is $h(x,y) = -\frac{1}{6}xy$.</p>
+
+        <div style="background-color: var(--math-bg); padding: 15px; border-radius: 4px; text-align: center; margin-top: 20px;">
+            <strong>Final Solution:</strong> $$f(x,y) = f_p(x,y) + h(x,y) = \frac{1}{3}(x^3y + xy^3) - \frac{1}{6}xy$$
+        </div>
     </div>
 
     <div class="step-box">
@@ -516,7 +534,10 @@
         <p><strong>1. Particular Solution:</strong> A solution to $\nabla^2 g = x^2 - y^2$ is $g_p = \frac{1}{12}(x^4 - y^4)$.</p>
         <p><strong>2. Check Dirichlet Boundary:</strong> We need $g = 0$ on the boundary $x^2+y^2=1$. Currently, on the boundary, $x^4-y^4 = (x^2-y^2)(x^2+y^2) = x^2-y^2$. So $g_p \neq 0$.</p>
         <p><strong>3. Harmonic Correction:</strong> We must subtract $\frac{1}{12}(x^2-y^2)$ from our function. Because $(x^2-y^2)$ is itself a harmonic function ($\nabla^2(x^2-y^2) = 0$), we can subtract it directly without violating our underlying Poisson equation.</p>
-        <p><strong>Final Solution:</strong> $$g(x,y) = \frac{1}{12}(x^4 - y^4) - \frac{1}{12}(x^2 - y^2)$$</p>
+        
+        <div style="background-color: var(--math-bg); padding: 15px; border-radius: 4px; text-align: center; margin-top: 20px;">
+            <strong>Final Solution:</strong> $$g(x,y) = \frac{1}{12}(x^4 - y^4) - \frac{1}{12}(x^2 - y^2)$$
+        </div>
     </div>
 
     <h2>4. Visualization of the Potentials</h2>
