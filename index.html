@@ -271,10 +271,6 @@
         <p>This document explores the concept of <strong>quasi-exactness</strong>—the mathematical framework used to definitively measure exactly <em>how</em> conservative a path-dependent field is. By utilizing the <strong>Hodge Decomposition Theorem</strong>, we can mathematically slice any messy, non-exact differential form into perfectly orthogonal "exact" (gradient) and "co-exact" (swirling) components. By comparing the $L^2$ norms (energies) of these separated layers, we can assign a strict, quantitative percentage to the field's exactness.</p>
     </div>
 
-    <div class="image-placeholder">
-        
-    </div>
-
     <h2>1. Formal Definitions and Framework</h2>
     <p>Before decomposing a form, we rigorously define the space it lives in and the operators acting upon it. Let $M$ be an $n$-dimensional oriented Riemannian manifold.</p>
 
@@ -289,9 +285,6 @@
             <li><strong>$\Omega^2(M)$ (2-forms):</strong> Objects that naturally integrate over surfaces (e.g., magnetic flux).</li>
             <li><strong>$\Omega^n(M)$ ($n$-forms):</strong> Top-forms, representing the fundamental volume elements for the space.</li>
         </ul>
-        <div class="image-placeholder">
-            
-        </div>
     </div>
 
     <div class="definition">
@@ -302,9 +295,6 @@
             <li><strong>Graded Leibniz Rule:</strong> For a $k$-form $\alpha$ and any form $\beta$, $d(\alpha \wedge \beta) = d\alpha \wedge \beta + (-1)^k \alpha \wedge d\beta$.</li>
             <li><strong>Nilpotence:</strong> $d^2 = d \circ d = 0$. Geometrically, this expresses the profound topological principle that "the boundary of a boundary is zero."</li>
         </ol>
-        <div class="image-placeholder">
-            
-        </div>
     </div>
 
     <div class="definition">
@@ -327,9 +317,6 @@
         $$\star(dy \wedge dz) = dx, \quad \star(dz \wedge dx) = dy, \quad \star(dx \wedge dy) = dz$$
         <p><em>Mapping scalars to volumes:</em></p>
         $$\star 1 = dx \wedge dy \wedge dz, \quad \star(dx \wedge dy \wedge dz) = 1$$
-        <div class="image-placeholder">
-            
-        </div>
 
         <hr style="border:0; border-top: 1px solid var(--border-color); margin: 20px 0;">
 
@@ -342,9 +329,6 @@
         $$\star(dx_2 \wedge dx_4) = -dx_1 \wedge dx_3$$
         $$\star(dx_3 \wedge dx_4) = dx_1 \wedge dx_2$$
         <p><em>(Note: In Minkowski spacetime for relativity, the signature causes some of these signs to change, which dictates the dual relationship between Electric and Magnetic fields).</em></p>
-        <div class="image-placeholder">
-            
-        </div>
     </div>
 
     <div class="definition">
@@ -366,10 +350,6 @@
     
     <div class="math-block">
         $$\Omega^k(M) = d\Omega^{k-1}(M) \oplus \delta\Omega^{k+1}(M) \oplus \mathcal{H}^k(M)$$
-    </div>
-    
-    <div class="image-placeholder">
-        
     </div>
 
     <p>Any $k$-form $\omega$ can be uniquely written as $\omega = d\alpha + \delta\beta + \gamma$, where:</p>
@@ -446,10 +426,7 @@
         <div class="info-note">
             <h4>📝 Clarifying Vector Notation: Angle Brackets vs. Basis Vectors</h4>
             <p>In the math below, you will see vectors written with angle brackets, like $\langle \omega_x, \omega_y \rangle$. It is extremely important to note that <strong>this is not an inner product (scalar product)</strong>. In vector calculus, angle brackets are frequently used as <em>component notation</em> to define a vector's horizontal and vertical parts, distinguishing it from a coordinate point $(x,y)$.</p>
-            <p>To remove any ambiguity with the inner product $\langle \vec{A}, \vec{B} \rangle$, we provide both the component notation and the standard basis vector notation ($\hat{i}, \hat{j}$) side-by-side:</p>
-            <div class="image-placeholder">
-                
-            </div>
+            <p>To remove any ambiguity with the inner product $\langle \vec{A}, \vec{B} \rangle$, we provide both the component notation and the standard basis vector notation ($\hat{i}, \hat{j}$) side-by-side.</p>
         </div>
 
         <ul>
@@ -465,10 +442,6 @@
         $$\iint_D \nabla \cdot (f\vec{C}) \, dA$$
         <p>By the Divergence Theorem, this 2D area integral becomes a 1D line integral around the boundary curve $\partial D$:</p>
         $$\iint_D \nabla \cdot (f\vec{C}) \, dA = \oint_{\partial D} f (\vec{C} \cdot \hat{n}) \, ds$$
-        
-        <div class="image-placeholder">
-            
-        </div>
 
         <p>For orthogonality, this boundary integral <strong>must be zero</strong> for any arbitrary scalar potential $f$. Therefore, we are forced to set:</p>
         $$\vec{C} \cdot \hat{n} = 0 \text{ on } \partial D$$
@@ -484,9 +457,6 @@
             </li>
             <li><strong>The Tangent Vector ($\hat{t}$):</strong> A tangent vector must be perfectly orthogonal to the normal, meaning their dot product is zero ($\hat{n} \cdot \hat{t} = 0$). By swapping the $x$ and $y$ components and negating one, we satisfy this: $x(-y) + y(x) = 0$. We choose $\hat{t} = -y\hat{i} + x\hat{j}$ (rather than $y\hat{i} - x\hat{j}$) because evaluating it at $(1,0)$ gives $0\hat{i} + 1\hat{j}$, which points UP, matching the standard counter-clockwise (positive) orientation required by Green's Theorem.</li>
         </ul>
-        <div class="image-placeholder">
-            
-        </div>
 
         <h4>3. The Dirichlet Condition for $g$</h4>
         <p>Using the boundary vectors derived above, let's calculate $\vec{C} \cdot \hat{n}$:</p>
@@ -508,9 +478,6 @@
         
         <p><strong>Passage 1: The Intuition</strong><br>
         Imagine fluid flowing through our 2D disk. The original vector field $\vec{V}$ dictates how the fluid moves, including how it pushes in and out of the boundary edge. Because we already forced Team Co-exact ($\vec{C}$) to follow a Dirichlet condition ($\vec{C} \cdot \hat{n} = 0$), it is banned from crossing the border. Therefore, Team Exact ($\nabla f$) must handle 100% of the boundary flux. This division of labor is what the Neumann boundary condition represents.</p>
-        <div class="image-placeholder">
-            
-        </div>
 
         <p><strong>Passage 2: The Algebraic Derivation</strong><br>
         We start with our fundamental decomposition on the boundary $\partial D$: $\vec{V} = \nabla f + \vec{C}$. Taking the dot product with the normal vector gives $\vec{V} \cdot \hat{n} = (\nabla f \cdot \hat{n}) + (\vec{C} \cdot \hat{n})$. Because $\vec{C} \cdot \hat{n} = 0$, the term vanishes. Since $\nabla f \cdot \hat{n}$ is the normal directional derivative $\frac{\partial f}{\partial n}$, we are left with our strict rule: $\frac{\partial f}{\partial n} = \vec{V} \cdot \hat{n}$.</p>
@@ -546,30 +513,79 @@
     <div id="plot-exact" class="plot-container"></div>
     <div id="plot-coexact" class="plot-container"></div>
 
-    <h2>5. The Final "Percentage of Exactness"</h2>
-    <p>Now that we have strictly orthogonal components, their energies (L<sup>2</sup> norms squared) satisfy the Pythagorean theorem:</p>
-    
-    <div class="math-block">
-        $$\|\omega\|^2 = \|df\|^2 + \|\delta\beta\|^2$$
+    <h2>5. Explicit Computation of Energies & Exactness</h2>
+    <p>To compute the exact energies (the $L^2$ norms squared) over the unit disk $D$, we convert the vector magnitudes to <strong>polar coordinates</strong> $(r, \theta)$, where $x = r\cos\theta$ and $y = r\sin\theta$. The area element becomes $dA = r \, dr \, d\theta$, and we integrate over $r \in [0, 1]$ and $\theta \in [0, 2\pi]$.</p>
+
+    <div class="step-box">
+        <h4>Step 1: The Total Energy of the Original Field ($\|\omega\|^2$)</h4>
+        <p>Our original vector field is $\vec{V} = \langle x^2y, xy^2 \rangle$. We find the squared magnitude $|\vec{V}|^2$ and convert to polar:</p>
+        $$
+        \begin{aligned}
+        |\vec{V}|^2 &= (x^2y)^2 + (xy^2)^2 = x^4y^2 + x^2y^4 = x^2y^2(x^2 + y^2) \\
+        &= (r^2\cos^2\theta)(r^2\sin^2\theta)(r^2) = r^4\left(\frac{1}{2}\sin(2\theta)\right)^2(r^2) \\
+        &= \frac{1}{4}r^6\sin^2(2\theta)
+        \end{aligned}
+        $$
+        <p>Now, we integrate this over the unit disk using $dA = r \, dr \, d\theta$:</p>
+        $$
+        \begin{aligned}
+        \|\omega\|^2 &= \int_0^{2\pi} \int_0^1 \left( \frac{1}{4}r^6\sin^2(2\theta) \right) r \, dr \, d\theta \\
+        &= \frac{1}{4} \left( \int_0^{2\pi} \sin^2(2\theta) \, d\theta \right) \left( \int_0^1 r^7 \, dr \right) \\
+        &= \frac{1}{4} (\pi) \left[ \frac{1}{8}r^8 \right]_0^1 = \frac{1}{4} (\pi) \left( \frac{1}{8} \right) = \frac{\pi}{32}
+        \end{aligned}
+        $$
     </div>
 
-    <p>Integrating the squared vector magnitudes over the unit disk in polar coordinates yields:</p>
-
-    <ul>
-        <li><strong>Total Energy ($\|\omega\|^2$):</strong> $\frac{\pi}{32}$</li>
-        <li><strong>Energy of the Exact Part ($\|df\|^2$):</strong> $\frac{\pi}{36}$</li>
-        <li><strong>Energy of the Co-exact Part ($\|\delta\beta\|^2$):</strong> $\frac{\pi}{288}$</li>
-    </ul>
-
-    <p>Notice that $\frac{\pi}{36} + \frac{\pi}{288} = \frac{8\pi}{288} + \frac{\pi}{288} = \frac{\pi}{32}$. The sum of the parts perfectly equals the whole.</p>
-    
-    <p>To quantify how "quasi-exact" our original path-dependent field is, we divide the exact energy by the total energy:</p>
-
-    <div class="math-block">
-        $$\text{Percentage Exact} = \frac{\pi/36}{\pi/32} = \frac{8}{9} \approx 88.89\%$$
+    <div class="step-box">
+        <h4>Step 2: The Energy of the Exact Part ($\|df\|^2$)</h4>
+        <p>We found our exact scalar potential to be $f(x,y) = \frac{1}{3}xy(x^2+y^2) - \frac{1}{6}xy$. In polar coordinates:</p>
+        $$
+        \begin{aligned}
+        f(r,\theta) &= \frac{1}{3}\left(\frac{1}{2}r^2\sin(2\theta)\right)(r^2) - \frac{1}{6}\left(\frac{1}{2}r^2\sin(2\theta)\right) \\
+        &= \left( \frac{1}{6}r^4 - \frac{1}{12}r^2 \right) \sin(2\theta)
+        \end{aligned}
+        $$
+        <p>The exact part is the gradient field $\nabla f$. The squared magnitude is $|\nabla f|^2 = (f_r)^2 + \frac{1}{r^2}(f_\theta)^2$. Computing the derivatives and squaring them:</p>
+        $$ f_r^2 = \left(\frac{2}{3}r^3 - \frac{1}{6}r\right)^2\sin^2(2\theta) = \left(\frac{4}{9}r^6 - \frac{2}{9}r^4 + \frac{1}{36}r^2\right)\sin^2(2\theta) $$
+        $$ \frac{1}{r^2}f_\theta^2 = \frac{1}{r^2}\left[ \left(\frac{1}{3}r^4 - \frac{1}{6}r^2\right) 2\cos(2\theta) \right]^2 = \left(\frac{1}{9}r^6 - \frac{1}{9}r^4 + \frac{1}{36}r^2\right)\cos^2(2\theta) $$
+        <p>Integrating over the disk, the angular integrals $\int_0^{2\pi}\sin^2(2\theta)d\theta$ and $\int_0^{2\pi}\cos^2(2\theta)d\theta$ both evaluate to $\pi$. We sum the radial polynomials and multiply by the area element $r$:</p>
+        $$
+        \begin{aligned}
+        \|df\|^2 &= \pi \int_0^1 \left[ \left(\frac{4}{9}r^6 - \frac{2}{9}r^4 + \frac{1}{36}r^2\right) + \left(\frac{1}{9}r^6 - \frac{1}{9}r^4 + \frac{1}{36}r^2\right) \right] r \, dr \\
+        &= \pi \int_0^1 \left( \frac{5}{9}r^6 - \frac{1}{3}r^4 + \frac{1}{18}r^2 \right) r \, dr = \pi \int_0^1 \left( \frac{5}{9}r^7 - \frac{1}{3}r^5 + \frac{1}{18}r^3 \right) \, dr \\
+        &= \pi \left[ \frac{5}{72}r^8 - \frac{1}{18}r^6 + \frac{1}{72}r^4 \right]_0^1 = \pi \left( \frac{5}{72} - \frac{4}{72} + \frac{1}{72} \right) = \frac{2\pi}{72} = \frac{\pi}{36}
+        \end{aligned}
+        $$
     </div>
 
-    <p><strong>Conclusion:</strong> Even though $\omega = x^2y \, dx + xy^2 \, dy$ is officially non-exact, we have quantitatively proven that over a unit disk, <strong>88.89%</strong> of its energy behaves perfectly conservatively. Only the remaining 11.11% contributes to the non-exact, path-dependent swirl.</p>
+    <div class="step-box">
+        <h4>Step 3: The Energy of the Co-Exact Part ($\|\delta\beta\|^2$)</h4>
+        <p>Our co-exact scalar potential is $g(x,y) = \frac{1}{12}(x^4 - y^4) - \frac{1}{12}(x^2 - y^2)$. In polar coordinates:</p>
+        $$ g(r,\theta) = \frac{1}{12}r^4\cos(2\theta) - \frac{1}{12}r^2\cos(2\theta) = \left( \frac{1}{12}r^4 - \frac{1}{12}r^2 \right) \cos(2\theta) $$
+        <p>The co-exact field is $\vec{C} = \langle g_y, -g_x \rangle$. Since $g_y^2 + (-g_x)^2 = |\nabla g|^2$, we use the exact same polar gradient formula. Computing the derivatives and squaring them:</p>
+        $$ g_r^2 = \left(\frac{1}{3}r^3 - \frac{1}{6}r\right)^2\cos^2(2\theta) = \left(\frac{1}{9}r^6 - \frac{1}{9}r^4 + \frac{1}{36}r^2\right)\cos^2(2\theta) $$
+        $$ \frac{1}{r^2}g_\theta^2 = \frac{1}{r^2}\left[ -\left(\frac{1}{6}r^4 - \frac{1}{6}r^2\right)\sin(2\theta) \right]^2 = \left(\frac{1}{36}r^6 - \frac{1}{18}r^4 + \frac{1}{36}r^2\right)\sin^2(2\theta) $$
+        <p>Again, angular integration yields $\pi$ for both terms. Summing the radial polynomials multiplied by $r$:</p>
+        $$
+        \begin{aligned}
+        \|\delta\beta\|^2 &= \pi \int_0^1 \left[ \left(\frac{1}{9}r^6 - \frac{1}{9}r^4 + \frac{1}{36}r^2\right) + \left(\frac{1}{36}r^6 - \frac{1}{18}r^4 + \frac{1}{36}r^2\right) \right] r \, dr \\
+        &= \pi \int_0^1 \left( \frac{5}{36}r^7 - \frac{1}{6}r^5 + \frac{1}{18}r^3 \right) \, dr \\
+        &= \pi \left[ \frac{5}{288}r^8 - \frac{1}{36}r^6 + \frac{1}{72}r^4 \right]_0^1 = \pi \left( \frac{5}{288} - \frac{8}{288} + \frac{4}{288} \right) = \frac{\pi}{288}
+        \end{aligned}
+        $$
+    </div>
+
+    <div class="step-box">
+        <h4>Step 4: The Final Percentage</h4>
+        <p>First, we verify that the Hodge Decomposition worked perfectly. Orthogonality dictates that the exact and co-exact energies must sum to the total energy:</p>
+        $$ \|df\|^2 + \|\delta\beta\|^2 = \frac{\pi}{36} + \frac{\pi}{288} = \frac{8\pi}{288} + \frac{\pi}{288} = \frac{9\pi}{288} = \frac{\pi}{32} $$
+        <p>This matches our total energy $\|\omega\|^2$ exactly!</p>
+        <p>Finally, the percentage of exactness is the ratio of the exact energy to the total energy:</p>
+        $$ \text{Percentage Exact} = \frac{\|df\|^2}{\|\omega\|^2} = \frac{\pi/36}{\pi/32} = \frac{32}{36} = \frac{8}{9} \approx 88.89\% $$
+        <div style="background-color: var(--accent); padding: 15px; border-radius: 4px; text-align: center; margin-top: 20px;">
+            <strong>Conclusion:</strong> Even though $\omega = x^2y \, dx + xy^2 \, dy$ is officially non-exact, we have quantitatively proven that over a unit disk, <strong>88.89%</strong> of its energy behaves perfectly conservatively. Only the remaining 11.11% contributes to the non-exact, path-dependent swirl.
+        </div>
+    </div>
 
     <hr style="border:0; height:1px; background:var(--border-color); margin: 60px 0;">
 
